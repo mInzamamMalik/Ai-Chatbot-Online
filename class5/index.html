@@ -38,6 +38,8 @@
 
         // console.log(names.length);
 
+
+        // primitive varibale behaviour
         //      .-------. .------.
         //      |1|2|3|4|5|6|7|8|9|10|12|13|14|
 
@@ -54,13 +56,37 @@
         // console.log(copy); // some other data
 
 
-
+        //non-primitive behaviour
         //      .-----------------------.
         //      |1|2|3|4|5|6|7|8|9|10|12|13|14|
 
 
-        var names = [  12  , "ma" , true  ];
-        var copy = names;
+
+        // var names = [12, "ma", true];
+        // var copy = names;
+
+        // console.log("names: ", names);
+        // console.log("copy: ", copy);
+
+        // names.push(5)
+        // copy.push(90)
+
+        // console.log("names: ", names);
+        // console.log("copy: ", copy);
+
+
+
+        //=========================
+        // // Array clone technique
+
+        var names = [12, "ma", true];
+
+        // es6 way
+        var copy = [...names];
+
+        // es5 way
+        // var copy = [].concat(names)
+
 
         console.log("names: ", names);
         console.log("copy: ", copy);
@@ -76,6 +102,21 @@
 
 
 
+
+
+
+
+
+        // compiled vs interpreted:
+
+        // how program runs:
+        // high level code => low level code/bytecode/assembly => binary/exe
+
+        // compiled: we do first 2 part as developer, and give binary to user, so it is fast
+        // but you have to build sepratly for different platforms
+
+        // interpreted: we give user high level code, and when user run the code it get executed line by line in same mnners
+        // regardless of platform and operating system
 
 
 
