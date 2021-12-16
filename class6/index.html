@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+
+        var subjects = ["science", "phy", "biology", "math"]
+        // {
+        //      0: "science",
+        //      1: "phy", 
+        //      2: "biology",
+        //      3: "math"
+        // }
+
+
+
+        // var student1 = {
+        //     name: "Ali raza",
+        //     isActive: true,
+        //     pinNumber: 2231,
+        //     subjects: ["Networking", "Ai", "chatbot"],
+        //     teacher: {
+        //         name: "Malik",
+        //         rank: "senior instructor",
+        //         batchNumber: 23223
+        //     }
+        // }
+
+        // student1.name = "Arsalan"
+
+        // console.log("student1.name: ", student1.name)
+        // console.log("student1.isActive: ", student1.isActive)
+        // console.log("student1.pinNumber: ", student1.pinNumber)
+        // console.log("student1.subjects: ", student1.subjects)
+        // console.log("student1.subjects[0]: ", student1.subjects[0])
+
+        // console.log("student1.teacher: ", student1.teacher)
+        // console.log("student1.teacher.name: ", student1.teacher.name)
+        // console.log("student1.teacher.rank: ", student1.teacher.rank)
+
+        // student1.teacher.name = "Mike"
+        // console.log("student1.teacher.name: ", student1.teacher.name);
+
+
+
+
+
+        // // referance issue in copy
+        // var student1 = {
+        //     name: "Ali raza",
+        //     isActive: true,
+        //     pinNumber: 2231
+        // }
+
+        // var copy = student1;
+
+        // console.log("student1.name: ", student1.name);
+        // console.log("copy.name: ", copy.name);
+
+        // copy.name = "Jack";
+
+        // console.log("student1.name: ", student1.name);
+        // console.log("copy.name: ", copy.name);
+
+        // console.log("student1.isActive: ", student1.isActive);
+        // console.log("copy.isActive: ", copy.isActive);
+
+        // student1.isActive = false;
+
+        // console.log("student1.isActive: ", student1.isActive);
+        // console.log("copy.isActive: ", copy.isActive);
+
+
+        // work around referance issue in copy
+        var student1 = {
+            name: "Ali raza",
+            isActive: true,
+            pinNumber: 2231,
+            shortDesc: `sdfgsdjg sdf gs dg sdf gsd fg sd gsdfg
+            sdfg sd gsd g sd fgsd g sd fgsd g sd fgsdgs gsggdf
+            fggdgdfgdfg dfgd gd fgdf gdfgdfgdfg dfgdfgdfg dfgg`
+        }
+
+        // es6
+        var copy = { ...student1 };
+
+        // es5
+        // var copy = Object.assign({}, student1)
+
+        copy.name = "Jack";
+
+        console.log("student1.name: ", student1.name);
+        console.log("copy.name: ", copy.name);
+
+        console.log("student1.isActive: ", student1.isActive);
+        console.log("copy.isActive: ", copy.isActive);
+
+        student1.isActive = false;
+
+        console.log("student1.isActive: ", student1.isActive);
+        console.log("copy.isActive: ", copy.isActive);
+
+
+
+
+
+
+    </script>
+
+
+</body>
+
+</html>
