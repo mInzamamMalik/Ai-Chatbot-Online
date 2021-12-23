@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+
+
+    Temprature: <input type="number" id="temp" placeholder="current temprature">
+    <br>
+    Min Temprature: <input type="number" id="minTemp" placeholder="current todays minimum temprature">
+    <br>
+    Max Temprature: <input type="number" id="maxTemp" placeholder="current todays maximum temprature">
+
+    <!-- City Name: <input type="text" id="cityName" placeholder="Enter your city name"> -->
+    <br>
+    <button onclick="think()">Think</button>
+
+    <h1 id="result"></h1>
+
+
+
+
+    <script>
+
+
+        // && - logical AND - binary operator
+        // e.g:     true && true = true 
+        // need true both sides to return true, otherwise return false
+
+        // || - logical OR - binary operator
+        // e.g:     false || false = false
+        // need false both sides to return false, other wise return true
+
+
+        // ! - logical NOT - unary operator
+        // e.g:     !false = true
+        // need operand only right side, simply negate the value in bolean
+
+        function think() {
+
+            // let cityName = document.getElementById("cityName").value
+
+            // // Make a request for a user with a given ID  
+            // axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=53534534sdfsfsf&units=metric`)
+            //     .then(function (response) {
+            //         let result = response.data
+
+            //         console.log("result: ", result);
+
+            //         REST OF YOUR CODE GOES HERE
+
+            //     })
+            //     .catch(function (error) {
+            //         // handle error
+            //         console.log(error);
+            //     })
+
+
+            var temp = document.getElementById("temp").value;
+            var minTemp = document.getElementById("minTemp").value;
+            var maxTemp = document.getElementById("maxTemp").value;
+            var result = document.getElementById("result");
+            // var maxTemp = 25;
+            // var perp = 25; // 0 - 100
+
+
+            if ((temp < -10) || (minTemp < -10)) {
+
+                result.innerText = "dont go out its too cold";
+
+            } else if (temp > 35 || maxTemp > 35) {
+
+                result.innerText = "Dont go outside its too hot";
+
+            } else if (
+                (temp >= -10 && temp <= 5) ||
+                (minTemp >= -10 && minTemp <= 5)
+            ) {
+
+                result.innerText = "carry coat and be care full";
+
+            } else if (
+                (temp > 5 && temp <= 20)
+                || (minTemp > 5 && minTemp <= 20)
+            ) {
+
+                result.innerText = "carry jacket with you";
+
+            }
+
+            else if (temp > 20 && temp <= 35) {
+
+                result.innerText = "Dont carry jacket";
+
+            }
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+</body>
+
+</html>
