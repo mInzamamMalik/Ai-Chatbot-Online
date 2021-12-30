@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+
+    <script>
+
+        // if (temp < 5) {
+
+        //     if (temp === 3) {
+
+        //         console.log("temp is 3");
+        //     } else if (temp === 2) {
+
+        //         console.log("temp is 2");
+        //     } else {
+        //         console.log("temp is otherwise");
+        //     }
+
+        // }
+
+
+        // if else vs Ternary operator
+
+        // if (true) {
+        //     // line 1
+        //     // line 2
+        // }else{
+        //     // line 1
+        //     // line 2
+        // }
+
+        // let result = (true) ? "rock" : "paper";
+
+
+        ///////////////////
+
+        // ternary operator systax
+        // (condition boolean / expression) ? <return value on true> : <return value on false> 
+
+
+        // two user inoputs
+        let name = "John";
+        let gender = "male"; // female    
+
+        // let message = ``
+
+        // if(gender === "male"){
+        //     message = `Hello Mr.${name}`
+        // }else{
+        //     message = `Hello Miss.${name}`
+        // }
+
+        // let message = `Hello ${(gender === "male") ? "Mr." : "Miss."} ${name}`
+
+        // without templating
+        // let message = "Hello " + ((gender === "male") ? "Mr." : "Miss.") + name;
+
+        let title = (gender === "male") ? "Mr." : "Miss.";
+        let message = `Hello ${title} ${name}`
+
+
+        console.log(message);
+
+
+
+
+
+
+
+    </script>
+
+
+</body>
+
+</html>
