@@ -13,14 +13,84 @@
 
 
 
-    City Name: <input type="text" id="cityName" placeholder="Enter your city name">
-    <br>
-    <button onclick="think()">Think</button>
+    <h1>Top 10 cities in the world:</h1>
+    Your City Name:
+    <br />
+    <input type="text" id="cityName" placeholder="Enter your city name">
+    <br />
+    <button onclick="check()">Check if your city in the list</button>
 
     <h1 id="result"></h1>
 
 
     <script>
+
+        function check() {
+
+            let cityName = document.getElementById("cityName").value.toUpperCase();
+            let result = document.getElementById("result");
+
+
+            // if (cityName === "LONDON" ) {
+            //     result.innerText = "your city is one of the top 5 city in the world"
+
+            // } else if (cityName === "PARIS") {
+            //     result.innerText = "your city is one of the top 5 city in the world"
+
+
+            // } else if (cityName === "NEW YORK") {
+            //     result.innerText = "your city is one of the top 5 city in the world"
+
+
+            // } else if (cityName === "MOSCOW") {
+            //     result.innerText = "your city is one of the top 5 city in the world"
+
+
+            // } else if (cityName === "DUBAI") {
+            //     result.innerText = "your city is one of the top 5 city in the world"
+
+            // } else {
+            //     result.innerText = "Sorry! Not Found in the top 5 cities in the world"
+            // }
+
+
+            switch (cityName) {
+
+                case 5:
+                    console.log("its 5");
+                    break;
+                    
+                case "LONDON":
+                    result.innerText = "your city is one of the top 5 city in the world"
+                    break;
+
+                case "PARIS":
+                    result.innerText = "your city is one of the top 5 city in the world"
+                    break;
+
+                case "NEW YORK":
+                    result.innerText = "your city is one of the top 5 city in the world";
+                    break;
+
+                case "MOSCOW":
+                    result.innerText = "your city is one of the top 5 city in the world"
+                    break;
+
+                case "DUBAI":
+                    result.innerText = "your city is one of the top 5 city in the world"
+                    break;
+
+                default:
+                    result.innerText = "Sorry! Not Found in the top 5 cities in the world"
+                    break;
+            }
+
+
+
+
+
+
+        }
 
 
 
