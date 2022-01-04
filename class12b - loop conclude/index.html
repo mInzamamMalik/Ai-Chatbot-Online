@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table</title>
+
+</head>
+
+<body>
+
+    <script>
+
+        // // sequance proof
+        // var i = 0;
+
+        // for (
+        //     console.log("I am init part");
+        //     i < 10;
+        //     console.log("I am increment part")
+        // ) {
+        //     console.log("index: ", i);
+        //     i++;
+        // }
+
+
+
+
+
+        var firstNames = ["Muhammad", "Ali", "Rizwan", "Slaman"];
+        var lastNames = ["Khan", "Malik", "Zia", "Awan"];
+
+        var nickNames = [];
+
+        // wrong way
+        // nickNames.push(`${firstNames[0]} ${lastNames[0]}`);
+        // nickNames.push(`${firstNames[0]} ${lastNames[1]}`);
+        // nickNames.push(`${firstNames[0]} ${lastNames[2]}`);
+        // nickNames.push(`${firstNames[0]} ${lastNames[3]}`);
+
+        // nickNames.push(`${firstNames[1]} ${lastNames[0]}`);
+        // nickNames.push(`${firstNames[1]} ${lastNames[1]}`);
+        // nickNames.push(`${firstNames[1]} ${lastNames[2]}`);
+        // nickNames.push(`${firstNames[1]} ${lastNames[3]}`);
+
+        // nickNames.push(`${firstNames[2]} ${lastNames[0]}`);
+        // nickNames.push(`${firstNames[2]} ${lastNames[1]}`);
+        // nickNames.push(`${firstNames[2]} ${lastNames[2]}`);
+        // nickNames.push(`${firstNames[2]} ${lastNames[3]}`);
+
+        // nickNames.push(`${firstNames[3]} ${lastNames[0]}`);
+        // nickNames.push(`${firstNames[3]} ${lastNames[1]}`);
+        // nickNames.push(`${firstNames[3]} ${lastNames[2]}`);
+        // nickNames.push(`${firstNames[3]} ${lastNames[3]}`);
+
+
+        // // right way
+        // for (var i = 0; i < firstNames.length; i++) {
+
+        //     for (var j = 0; j < lastNames.length; j++) {
+
+        //         nickNames.push(`${firstNames[i]} ${lastNames[j]}`);
+
+        //     }
+
+        // }
+
+
+
+
+        // console.log("nickNames: ", nickNames);
+        // Muhammad khan, Muhammad Malik, Muhammad Zia, Muhammad Awan
+        // Ali khan, Ali Malik, 
+
+
+        firstNames.map((eachItem, index) => {
+
+            console.log("inside map body: ", index, eachItem);
+        })
+
+
+        // 2 pcs. of 3x3 matrics and sum and display
+
+
+
+
+
+    </script>
+</body>
+
+</html>
