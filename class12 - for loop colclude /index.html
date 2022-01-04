@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table</title>
+    <style>
+        * {
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+        label {
+            margin-left: 20px;
+        }
+
+        input {
+            width: 12%;
+            height: 30px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding-left: 5px;
+        }
+
+        button {
+            height: 30px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding-left: 5px;
+            margin-left: 20px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <form onsubmit="generateTable(); return false;">
+
+        <label for="input1">Enter table of: </label>
+        <input type="number" placeholder="Enter a number" id="input1">
+        <br>
+
+        <label for="input2">Enter length of table: </label>
+        <input type="number" placeholder="Enter a number" id="input2">
+        <br>
+
+        <button type="submit"> Submit </button>
+    </form>
+
+
+    <br>
+    <div id="table"></div>
+
+    <script>
+        function generateTable() {
+
+            var tableInput = document.getElementById('input1').value;
+            var tableLength = document.getElementById('input2').value;
+
+            if (!tableInput) { alert("Please enter a Number") }
+            if (!tableLength) { alert("Please enter a Number") }
+
+            document.getElementById('input1').value = '';
+            document.getElementById('input2').value = '';
+
+            var table = document.getElementById('table');
+            table.innerText = "";
+
+            for (var i = 0; i < tableLength; i++) {
+
+                var oneBaseIndex = i + 1;
+
+                table.innerText += `${tableInput} x ${oneBaseIndex} = ${tableInput * oneBaseIndex} \n`;
+
+                console.log(`${tableInput} x ${oneBaseIndex} = ${tableInput * oneBaseIndex}`);
+
+            }
+        }
+    </script>
+</body>
+
+</html>
