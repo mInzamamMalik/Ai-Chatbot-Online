@@ -42,7 +42,9 @@
 
             // Make a request for a user with a given ID  
             axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=24234jghg2g34234&units=metric`)
-                .then(function (response) {
+                .then(
+                    
+                function(response) {
 
                     let weatherData = response.data
                     console.log("weatherData: ", weatherData);

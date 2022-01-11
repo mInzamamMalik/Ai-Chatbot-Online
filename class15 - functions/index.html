@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table</title>
+
+</head>
+
+<body>
+
+    <script>
+
+
+
+        // different ways of writing function:
+
+        // 1. named function:
+        // perform hoisting
+
+        function myFunction1(value1, value2) { // inputs, params, arguments, function parameters are similar to local variable of function 
+
+            var name = "adfdsf"
+
+            if (value1 !== undefined && value2 !== undefined) {
+
+                console.log("the sum is: " + (value1 + value2));
+
+            } else {
+
+                console.log("please provide both parameters of the function with numaric values");
+            }
+
+        }
+
+        myFunction1(34, 20);
+
+
+
+        // // 2. anonymous function:
+        // // lazy loading
+
+        // //writing:
+        // var myfunction2 = function () {
+        //     a = 5;
+        //     console.log("I am function code");
+        //     console.log("I am function code2");
+        //     console.log("I am function code3");
+        // }
+        // myfunction2();
+
+
+
+        // // 3. arow function
+        // // only supported in es6
+
+        // var myFunction3 = () => {
+        //     a = 5;
+        //     console.log("I am function code");
+        //     console.log("I am function code2");
+        //     console.log("I am function code3");
+        // }
+        // myfunction3();
+
+        // // 3. arow function
+        // // only supported in es6
+
+        // var myFunction3 = param1 => "return value"
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>
