@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table</title>
+
+</head>
+
+<body>
+
+    <script>
+
+        let myName = "Malik"
+        const myPhone = "23423434"
+
+
+
+
+        let getAverage = (numbers) => {
+
+            if (!numbers || !numbers.length) {
+                return "not an array";
+            }
+
+            let sum = 0;
+
+            numbers.map((eachValue) => {
+                sum = sum + eachValue;
+            });
+
+            let result = sum / numbers.length;
+
+            return result;
+        }
+
+
+
+        let avg = getAverage([23, 24, 25, 26, 21, 23]);
+        let avg2 = getAverage([22, 19, 22, 34, 12, 37]);
+
+        console.log(avg);
+        console.log(avg2);
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>
