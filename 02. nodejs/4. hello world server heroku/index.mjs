@@ -12,8 +12,9 @@ app.get('/food', (req, res) => {
     res.send('here is your food 🍔')
 })
 
-app.listen(3000, () => {
-    console.log(`Hello server is listening at http://localhost:3000`)
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Hello server is listening at http://localhost:${PORT}`)
 })
 
 
