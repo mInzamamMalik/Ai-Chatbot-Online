@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+
+<body>
+
+    <form onsubmit="sendToServer(); return false;">
+
+        <label for="input1">Enter table of: </label>
+        <input type="text" required placeholder="What is in your mind" id="input1">
+        <br>
+
+        <button type="submit"> Submit </button>
+    </form>
+    <h4 id="result"></h4>
+
+    <br />
+    <br />
+    <br />
+
+    <button onclick="getAllPost()">Get All Post</button>
+
+    <h3 id="posts"></h3>
+
+
+
+    <script>
+        const baseUrl = "http://localhost:3000";
+        // const baseUrl = "https://yourappname.herokuapp.com";
+
+        function sendToServer() {
+            let userPost = document.getElementById("input1").value
+            var result = document.getElementById("result");
+
+            axios.post(`${baseUrl}/post`, { text: userPost })
+                .then(function (response) {
+                    let responseData = response.data
+                    console.log("responseData: ", responseData);
+                    result.innerText = responseData;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+        }
+
+        function getAllPost() {
+            var posts = document.getElementById("posts");
+
+            axios.get(`${baseUrl}/posts`)
+                .then(function (response) {
+                    let responseData = response.data
+                    console.log("responseData: ", responseData);
+
+                    posts.innerHTML="";
+
+                    responseData.map(eachPost => {
+                        posts.innerHTML += `${eachPost.text} <br />`;
+                    })
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+        }
+        getAllPost();
+    </script>
+
+</body>
+
+</html>
