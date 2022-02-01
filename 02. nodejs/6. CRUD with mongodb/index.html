@@ -45,6 +45,8 @@
                     let responseData = response.data
                     console.log("responseData: ", responseData);
                     result.innerText = responseData;
+
+                    getAllPost();
                 })
                 .catch(function (error) {
                     // handle error
@@ -63,14 +65,17 @@
                     posts.innerHTML = "";
 
                     responseData.map(eachPost => {
-                        posts.innerHTML += 
-                        `<div> 
-                            <b> ${eachPost._id} </b>
-                            <p> ${eachPost.text} </p>
-                            <button onclick="deletePost('${eachPost._id}')"> delete </button>
-                        </div>  
+                        posts.innerHTML =
+                            `<div id="${eachPost._id}"> 
+
+                                <b> ${eachPost._id} </b>
+                                <p> ${eachPost.text} </p>
+                                <button onclick="deletePost('${eachPost._id}')"> delete </button>
+                                <button onclick="updatePost('${eachPost._id}')"> update </button>
+                               
+                            </div>  
                         <hr />  
-                        <br />`;
+                        <br />` + posts.innerHTML;
                     })
                 })
                 .catch(function (error) {
@@ -95,7 +100,52 @@
                     console.log(error);
                 })
         }
+
+        // function updatePost(id) {
+
+        //     let newPost = prompt("please enter new text for that post");
+
+        //     axios.put(`${baseUrl}/post/${id}`, { text: newPost })
+        //         .then(function (response) {
+        //             let responseData = response.data
+        //             console.log("responseData: ", responseData);
+        //             result.innerText = responseData;
+
+        //             getAllPost();
+        //         })
+        //         .catch(function (error) {
+        //             // handle error
+        //             console.log(error);
+        //         })
+        // }
+        function updatePost(id) {
+
+            document.getElementById(id).innerHTML = `
+                <input type="text" id="${id}_text" placeholder="enter new text for this post" />
+                <button onclick="doChanges('${id}')">do changes</button>
+            `;
+        }
+        function doChanges(id) {
+
+            let newText = document.getElementById(`${id}_text`).value;
+            
+            axios.put(`${baseUrl}/post/${id}`, { text: newText })
+                .then(function (response) {
+                    let responseData = response.data
+                    console.log("responseData: ", responseData);
+                    result.innerText = responseData;
+
+                    getAllPost();
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+        }
     </script>
+
+
+
 
 </body>
 
