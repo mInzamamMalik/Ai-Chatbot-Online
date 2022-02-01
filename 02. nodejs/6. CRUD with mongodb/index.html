@@ -28,7 +28,7 @@
 
     <button onclick="getAllPost()">Get All Post</button>
 
-    <h3 id="posts"></h3>
+    <div id="posts"></div>
 
 
 
@@ -60,10 +60,17 @@
                     let responseData = response.data
                     console.log("responseData: ", responseData);
 
-                    posts.innerHTML="";
+                    posts.innerHTML = "";
 
                     responseData.map(eachPost => {
-                        posts.innerHTML += `${eachPost.text} <br />`;
+                        posts.innerHTML += 
+                        `<div> 
+                            <b> ${eachPost._id} </b>
+                            <p> ${eachPost.text} </p>
+                            <button onclick="deletePost('${eachPost._id}')"> delete </button>
+                        </div>  
+                        <hr />  
+                        <br />`;
                     })
                 })
                 .catch(function (error) {
@@ -72,6 +79,22 @@
                 })
         }
         getAllPost();
+
+        function deletePost(id) {
+
+            axios.delete(`${baseUrl}/post/${id}`)
+                .then(function (response) {
+                    let responseData = response.data
+                    console.log("responseData: ", responseData);
+                    result.innerText = responseData;
+
+                    getAllPost();
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+        }
     </script>
 
 </body>
