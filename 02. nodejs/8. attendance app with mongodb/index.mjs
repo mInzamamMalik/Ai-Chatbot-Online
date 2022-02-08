@@ -159,7 +159,16 @@ app.get('/attendance/:date', (req, res) => {
         return;
     }
 
-    Attendance.find({ createdOn: req.params.date }, (err, data) => {
+    console.log("date: ", req.params.date);
+    console.log("date: ", typeof req.params.date);
+
+    Attendance.find({
+        createdOn: {
+            '$gte': `${req.params.date}T00:00:00.000Z`,
+            '$lt': `${req.params.date}T23:59:59.999Z`
+        }
+        
+    }, (err, data) => {
         if (!err) {
             res.send(data);
         } else {
