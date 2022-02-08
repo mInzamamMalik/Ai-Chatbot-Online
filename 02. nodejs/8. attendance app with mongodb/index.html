@@ -12,22 +12,32 @@
 
 <body>
 
-    <form onsubmit="sendToServer(); return false;">
+    <h1>Add Student:</h1>
+    <form onsubmit="addStudent(); return false;">
 
-        <label for="input1">Enter table of: </label>
-        <input type="text" required placeholder="What is in your mind" id="input1">
+        <label for="input1">Name </label>
+        <input type="text" required placeholder="Enter Student Name here" id="input1">
+        <br>
+        <label for="input1">Class Name: </label>
+        <input type="text" required placeholder="Enter name of class" id="input2">
+        <br>
+        <label for="input1">Roll Number: </label>
+        <input type="text" required placeholder="Enter Student roll number" id="input3">
         <br>
 
-        <button type="submit"> Submit </button>
+        <button type="submit"> Add Student </button>
     </form>
     <h4 id="result"></h4>
 
     <br />
     <br />
     <br />
-
-    <button onclick="getAllPost()">Get All Post</button>
-
+    
+    <button onclick="getAllStudents()">Get All Post</button>
+    
+    <br />
+    <br />
+    
     <div id="posts"></div>
 
 
@@ -36,17 +46,24 @@
         const baseUrl = "http://localhost:3000";
         // const baseUrl = "https://yourappname.herokuapp.com";
 
-        function sendToServer() {
-            let userPost = document.getElementById("input1").value
+        function addStudent() {
+            let studentName = document.getElementById("input1").value;
+            let studentClass = document.getElementById("input2").value;
+            let studentRoll = document.getElementById("input3").value;
+
             var result = document.getElementById("result");
 
-            axios.post(`${baseUrl}/post`, { text: userPost })
+            axios.post(`${baseUrl}/student`, {
+                studentName: studentName,
+                studentClass: studentClass,
+                studentRoll: studentRoll,
+            })
                 .then(function (response) {
                     let responseData = response.data
                     console.log("responseData: ", responseData);
                     result.innerText = responseData;
 
-                    getAllPost();
+                    getAllStudents();
                 })
                 .catch(function (error) {
                     // handle error
@@ -54,10 +71,10 @@
                 })
         }
 
-        function getAllPost() {
+        function getAllStudents() {
             var posts = document.getElementById("posts");
 
-            axios.get(`${baseUrl}/posts`)
+            axios.get(`${baseUrl}/students`)
                 .then(function (response) {
                     let responseData = response.data
                     console.log("responseData: ", responseData);
@@ -69,7 +86,9 @@
                             `<div id="${eachPost._id}"> 
 
                                 <b> ${eachPost._id} </b>
-                                <p> ${eachPost.text} </p>
+                                <p> ${eachPost.studentName} </p>
+                                <p> ${eachPost.studentClass} </p>
+                                <p> ${eachPost.studentRoll} </p>
                                 <button onclick="deletePost('${eachPost._id}')"> delete </button>
                                 <button onclick="updatePost('${eachPost._id}')"> update </button>
                                
@@ -83,7 +102,7 @@
                     console.log(error);
                 })
         }
-        getAllPost();
+        getAllStudents();
 
         function deletePost(id) {
 
@@ -93,7 +112,7 @@
                     console.log("responseData: ", responseData);
                     result.innerText = responseData;
 
-                    getAllPost();
+                    getAllStudents();
                 })
                 .catch(function (error) {
                     // handle error
@@ -111,7 +130,7 @@
         //             console.log("responseData: ", responseData);
         //             result.innerText = responseData;
 
-        //             getAllPost();
+        //             getAllStudents();
         //         })
         //         .catch(function (error) {
         //             // handle error
@@ -128,14 +147,14 @@
         function doChanges(id) {
 
             let newText = document.getElementById(`${id}_text`).value;
-            
+
             axios.put(`${baseUrl}/post/${id}`, { text: newText })
                 .then(function (response) {
                     let responseData = response.data
                     console.log("responseData: ", responseData);
                     result.innerText = responseData;
 
-                    getAllPost();
+                    getAllStudents();
                 })
                 .catch(function (error) {
                     // handle error

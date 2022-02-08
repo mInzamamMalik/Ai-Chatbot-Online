@@ -45,6 +45,14 @@ const postSchema = new mongoose.Schema({
 });
 const Post = mongoose.model('Post', postSchema);
 
+const studentSchema = new mongoose.Schema({
+    "studentName": String,
+    "studentClass": String,
+    "studentRoll": String,
+    "createdOn": { type: Date, default: Date.now }
+});
+const Student = mongoose.model('Student', studentSchema);
+
 
 app.get('/post/:id', (req, res) => {
     Post.findOne({ _id: req.params.id }, (err, data) => {
@@ -114,6 +122,54 @@ app.delete('/post/:id', (req, res) => {
             }
         });
 })
+
+
+
+app.post('/student', (req, res) => {
+
+    if (
+        !req.body.studentName
+        || !req.body.studentClass
+        || !req.body.studentRoll
+    ) {
+        res.status(400).send(`all parameters are required in json body,
+         e.g:
+         {
+            studentName: "john",
+            studentClass: "Batch 5 Web and mobile",
+            studentRoll: "KHI2231",
+        }`);
+        return;
+    }
+
+    let newStudent = new Student({
+        studentName: req.body.studentName,
+        studentClass: req.body.studentClass,
+        studentRoll: req.body.studentRoll,
+    })
+
+    newStudent.save((err, saved) => {
+        if (!err) {
+            res.send("Student is created 🥳");
+        } else {
+            res.status(500).send("some thing went wrong, please try later");
+        }
+    })
+})
+
+app.get('/students', (req, res) => {
+    Student.find({}, (err, data) => {
+        if (!err) {
+            res.send(data);
+        } else {
+            res.status(500).send("something went wrong")
+        }
+    })
+})
+
+
+
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
