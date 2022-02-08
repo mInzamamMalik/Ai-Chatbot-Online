@@ -32,13 +32,29 @@
     <br />
     <br />
     <br />
-    
+
     <button onclick="getAllStudents()">Get All Post</button>
-    
+
     <br />
     <br />
-    
+
     <div id="posts"></div>
+
+
+    <hr>
+    <hr>
+
+    <form onsubmit="getAttendance(); return false;">
+
+        Select date: <input required type="date" id="dateInput">
+        <button type="submit">Get Attendance</button>
+    
+    </form>
+
+    <br>
+
+    <div id="att"></div>
+
 
 
 
@@ -81,16 +97,15 @@
 
                     posts.innerHTML = "";
 
-                    responseData.map(eachPost => {
+                    responseData.map(eachStudent => {
                         posts.innerHTML =
-                            `<div id="${eachPost._id}"> 
+                            `<div id="${eachStudent._id}"> 
 
-                                <b> ${eachPost._id} </b>
-                                <p> ${eachPost.studentName} </p>
-                                <p> ${eachPost.studentClass} </p>
-                                <p> ${eachPost.studentRoll} </p>
-                                <button onclick="deletePost('${eachPost._id}')"> delete </button>
-                                <button onclick="updatePost('${eachPost._id}')"> update </button>
+                                <b> ${eachStudent._id} </b>
+                                <p> ${eachStudent.studentName} </p>
+                                <p> ${eachStudent.studentClass} </p>
+                                <p> ${eachStudent.studentRoll} </p>
+                                <button onclick="markAttendance('${eachStudent._id}', '${eachStudent.studentName}')"> Mark Present </button>
                                
                             </div>  
                         <hr />  
@@ -161,6 +176,60 @@
                     console.log(error);
                 })
         }
+
+        function markAttendance(id, name) {
+
+            axios.post(`${baseUrl}/attendance`, {
+                studentId: id,
+                studentName: name,
+                isPresent: true
+            })
+                .then(function (response) {
+                    let responseData = response.data
+                    console.log("responseData: ", responseData);
+                    result.innerText = responseData;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+        }
+
+        function getAttendance() {
+            var date = document.getElementById("dateInput").value;
+            var att = document.getElementById("att");
+
+
+            console.log("date: ", date);
+
+            axios.get(`${baseUrl}/attendance/${date}`)
+                .then(function (response) {
+                    let responseData = response.data
+                    console.log("responseData: ", responseData);
+
+                    att.innerHTML = "";
+
+                    responseData.map(eachAtt => {
+                        att.innerHTML =
+                            `<div id="${eachAtt._id}"> 
+
+                                <p> ${eachAtt.studentName} </p>
+                                <p> ${eachAtt.isPresent} </p>
+
+                            </div>  
+                        <hr />  
+                        <br />` + posts.innerHTML;
+                    })
+                })
+                .catch(function (error) {
+                    //handle error
+                console.log(error);
+            })
+        }
+        getAttendance();
+
+
+
     </script>
 
 

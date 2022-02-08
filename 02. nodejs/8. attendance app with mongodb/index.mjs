@@ -1,57 +1,10 @@
-import mongoose from "mongoose";
 import express, { response } from 'express';
 import cors from "cors";
-
+import { Attendance, Student, Post } from "./db.mjs"
 
 const app = express()
 app.use(express.json())
 app.use(cors());
-
-
-//// mongodb connection code /////////////////////////////////////////////////////////////////////////////////////////////
-let dbURI = "mongodb+srv://dbuser:dbpassword123@cluster0.9qvbs.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-// let dbURI = 'mongodb://localhost/mydatabase';
-mongoose.connect(dbURI);
-
-////////////////mongodb connected disconnected events///////////////////////////////////////////////
-mongoose.connection.on('connected', function () {//connected
-    console.log("Mongoose is connected");
-    // process.exit(1);
-});
-
-mongoose.connection.on('disconnected', function () {//disconnected
-    console.log("Mongoose is disconnected");
-    process.exit(1);
-});
-
-mongoose.connection.on('error', function (err) {//any error
-    console.log('Mongoose connection error: ', err);
-    process.exit(1);
-});
-
-process.on('SIGINT', function () {/////this function will run jst before app is closing
-    console.log("app is terminating");
-    mongoose.connection.close(function () {
-        console.log('Mongoose default connection closed');
-        process.exit(0);
-    });
-});
-////////////////mongodb connected disconnected events///////////////////////////////////////////////
-
-
-const postSchema = new mongoose.Schema({
-    "text": String,
-    "createdOn": { type: Date, default: Date.now }
-});
-const Post = mongoose.model('Post', postSchema);
-
-const studentSchema = new mongoose.Schema({
-    "studentName": String,
-    "studentClass": String,
-    "studentRoll": String,
-    "createdOn": { type: Date, default: Date.now }
-});
-const Student = mongoose.model('Student', studentSchema);
 
 
 app.get('/post/:id', (req, res) => {
@@ -168,6 +121,53 @@ app.get('/students', (req, res) => {
 })
 
 
+app.post('/attendance', (req, res) => {
+
+    if (
+        !req.body.studentId
+        || (req.body.isPresent === undefined)
+    ) {
+        res.status(400).send(`all parameters are required in json body,
+         e.g:
+         {
+            studentId: "32423jkj234kj23423kj4h24",
+            isPresent: true,
+        }`);
+        return;
+    }
+
+    let newAttendance = new Attendance({
+        studentId: req.body.studentId,
+        studentName: req.body.studentName,
+        isPresent: req.body.isPresent,
+    })
+
+    newAttendance.save((err, saved) => {
+        if (!err) {
+            res.send(`${req.body.studentName}'s Attendance is marked in database 🎊`);
+        } else {
+            res.status(500).send("some thing went wrong, please try later");
+        }
+    })
+
+})
+
+app.get('/attendance/:date', (req, res) => {
+
+    if (!req.params.date) {
+        res.status(400).send(`/attendance/`);
+        return;
+    }
+
+    Attendance.find({ createdOn: req.params.date }, (err, data) => {
+        if (!err) {
+            res.send(data);
+        } else {
+            res.status(500).send("something went wrong")
+
+        }
+    })
+})
 
 
 
