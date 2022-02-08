@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+
+<body>
+
+    <form onsubmit="sendToServer(); return false;">
+
+        <label for="input1">Enter table of: </label>
+        <input type="text" required placeholder="What is in your mind" id="input1">
+        <br>
+
+        <button type="submit"> Submit </button>
+    </form>
+    <h4 id="result"></h4>
+
+    <br />
+    <br />
+    <br />
+
+    <button onclick="getAllPost()">Get All Post</button>
+
+    <div id="posts"></div>
+
+
+
+    <script>
+        const baseUrl = "http://localhost:3000";
+        // const baseUrl = "https://yourappname.herokuapp.com";
+
+        function sendToServer() {
+            let userPost = document.getElementById("input1").value
+            var result = document.getElementById("result");
+
+            axios.post(`${baseUrl}/post`, { text: userPost })
+                .then(function (response) {
+                    let responseData = response.data
+                    console.log("responseData: ", responseData);
+                    result.innerText = responseData;
+
+                    getAllPost();
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+        }
+
+        function getAllPost() {
+            var posts = document.getElementById("posts");
+
+            axios.get(`${baseUrl}/posts`)
+                .then(function (response) {
+                    let responseData = response.data
+                    console.log("responseData: ", responseData);
+
+                    posts.innerHTML = "";
+
+                    responseData.map(eachPost => {
+                        posts.innerHTML =
+                            `<div id="${eachPost._id}"> 
+
+                                <b> ${eachPost._id} </b>
+                                <p> ${eachPost.text} </p>
+                                <button onclick="deletePost('${eachPost._id}')"> delete </button>
+                                <button onclick="updatePost('${eachPost._id}')"> update </button>
+                               
+                            </div>  
+                        <hr />  
+                        <br />` + posts.innerHTML;
+                    })
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+        }
+        getAllPost();
+
+        function deletePost(id) {
+
+            axios.delete(`${baseUrl}/post/${id}`)
+                .then(function (response) {
+                    let responseData = response.data
+                    console.log("responseData: ", responseData);
+                    result.innerText = responseData;
+
+                    getAllPost();
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+        }
+
+        // function updatePost(id) {
+
+        //     let newPost = prompt("please enter new text for that post");
+
+        //     axios.put(`${baseUrl}/post/${id}`, { text: newPost })
+        //         .then(function (response) {
+        //             let responseData = response.data
+        //             console.log("responseData: ", responseData);
+        //             result.innerText = responseData;
+
+        //             getAllPost();
+        //         })
+        //         .catch(function (error) {
+        //             // handle error
+        //             console.log(error);
+        //         })
+        // }
+        function updatePost(id) {
+
+            document.getElementById(id).innerHTML = `
+                <input type="text" id="${id}_text" placeholder="enter new text for this post" />
+                <button onclick="doChanges('${id}')">do changes</button>
+            `;
+        }
+        function doChanges(id) {
+
+            let newText = document.getElementById(`${id}_text`).value;
+            
+            axios.put(`${baseUrl}/post/${id}`, { text: newText })
+                .then(function (response) {
+                    let responseData = response.data
+                    console.log("responseData: ", responseData);
+                    result.innerText = responseData;
+
+                    getAllPost();
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+        }
+    </script>
+
+
+
+
+</body>
+
+</html>
