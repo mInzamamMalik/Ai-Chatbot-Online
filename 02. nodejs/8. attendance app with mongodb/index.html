@@ -7,38 +7,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+        crossorigin="anonymous"></script>
 </head>
 
-<body>
+<body style="margin-top: 10px; margin-left: 10px;">
 
     <h1>Add Student:</h1>
-    <form onsubmit="addStudent(); return false;">
 
-        <label for="input1">Name </label>
-        <input type="text" required placeholder="Enter Student Name here" id="input1">
-        <br>
-        <label for="input1">Class Name: </label>
-        <input type="text" required placeholder="Enter name of class" id="input2">
-        <br>
-        <label for="input1">Roll Number: </label>
-        <input type="text" required placeholder="Enter Student roll number" id="input3">
-        <br>
 
-        <button type="submit"> Add Student </button>
+    <form onsubmit="addStudent(); return false;" class="row g-3" style="width: 400px;">
+        <div class="col-md-6">
+            <label for="input1" class="form-label">Name</label>
+            <input type="text" class="form-control" id="input1">
+        </div>
+        <div class="col-md-6">
+            <label for="input2" class="form-label">Class name</label>
+            <input type="text" class="form-control" id="input2">
+        </div>
+        <div class="col-12">
+            <label for="input3" class="form-label">Roll Number</label>
+            <input type="text" class="form-control" id="input3" placeholder="1234 Main St">
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Add Student </button>
+        </div>
     </form>
+
+
+
+
+
+
     <h4 id="result"></h4>
 
     <br />
     <br />
     <br />
 
-    <button onclick="getAllStudents()">Get All Post</button>
+    <button onclick="getAllStudents()" class="btn btn-dark">Get All Post</button>
 
     <br />
     <br />
 
     <div id="posts"></div>
+
+
+
 
 
     <hr>
@@ -48,7 +70,7 @@
 
         Select date: <input required type="date" id="dateInput">
         <button type="submit">Get Attendance</button>
-    
+
     </form>
 
     <br>
@@ -98,16 +120,16 @@
                     posts.innerHTML = "";
 
                     responseData.map(eachStudent => {
-                        posts.innerHTML =
-                            `<div id="${eachStudent._id}"> 
-
-                                <b> ${eachStudent._id} </b>
-                                <p> ${eachStudent.studentName} </p>
-                                <p> ${eachStudent.studentClass} </p>
-                                <p> ${eachStudent.studentRoll} </p>
-                                <button onclick="markAttendance('${eachStudent._id}', '${eachStudent.studentName}')"> Mark Present </button>
-                               
-                            </div>  
+                        posts.innerHTML = `
+                        <div class="card" style="width: 18rem;" id="${eachStudent._id}">
+                            <div class="card-body">
+                                <h5 class="card-title">${eachStudent.studentName}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">${eachStudent._id}</h6>
+                                <p class="card-text">Class: ${eachStudent.studentClass} </p>
+                                <p class="card-text">Roll# ${eachStudent.studentRoll} </p>
+                                <button href="#" class="btn btn-primary" onclick="markAttendance('${eachStudent._id}', '${eachStudent.studentName}')">Mark Present</button>
+                            </div>
+                        </div>
                         <hr />  
                         <br />` + posts.innerHTML;
                     })
@@ -223,8 +245,8 @@
                 })
                 .catch(function (error) {
                     //handle error
-                console.log(error);
-            })
+                    console.log(error);
+                })
         }
         getAttendance();
 
