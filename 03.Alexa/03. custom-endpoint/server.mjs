@@ -2,6 +2,7 @@ import express from "express";
 import Alexa, { SkillBuilders } from 'ask-sdk-core';
 import morgan from "morgan";
 import { ExpressAdapter } from 'ask-sdk-express-adapter';
+import axios from "axios";
 
 const app = express();
 app.use(morgan("dev"))
@@ -13,7 +14,7 @@ const LaunchRequestHandler = {
       return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
   },
   handle(handlerInput) {
-      const speakOutput = 'Hello and Welcome, I am virtual version of Mr.Inzamam Malik. what would you like to ask? I can tell you his name and work experiance.';
+      const speakOutput = 'Response from express server, Hello and Welcome, I am virtual version of Mr.Inzamam Malik. what would you like to ask? I can tell you his name and work experiance.';
 
       return handlerInput.responseBuilder
           .speak(speakOutput)
@@ -96,7 +97,6 @@ const bookRoomIntentHandler = {
           && Alexa.getIntentName(handlerInput.requestEnvelope) === 'bookRoom';
   },
   handle(handlerInput) {
-      
       
        const slots = handlerInput.requestEnvelope.request.intent.slots;
        console.log("slots: ", slots);
