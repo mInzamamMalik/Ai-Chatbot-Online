@@ -160,7 +160,7 @@ const bookRoomIntentHandler = {
       console.log("something went wrong while saving booking: ", e);
     }
 
-    const speakOutput = `ok, your hotel booking for ${numberOfPeople.value} person is completed`;
+    const speakOutput = `ok, your room for ${numberOfPeople.value} people is reserved for ${duration.value} night`;
 
     return handlerInput.responseBuilder
       .speak(speakOutput)
