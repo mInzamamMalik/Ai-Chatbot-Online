@@ -4,6 +4,12 @@ import morgan from "morgan";
 import { ExpressAdapter } from 'ask-sdk-express-adapter';
 import axios from "axios";
 import mongoose from "mongoose";
+import moment from "moment";
+
+
+// let result = moment.duration("P4D");
+// console.log("momentjs result: ", result.asDays());
+
 
 
 mongoose.connect("mongodb+srv://user123:user123@testcluster123.nr4e4.mongodb.net/alexaclassdb?retryWrites=true&w=majority")
@@ -30,6 +36,13 @@ const bookingSchema = new mongoose.Schema({
   createdOn: { type: Date, default: Date.now },
 });
 const bookingModel = mongoose.model('Booking', bookingSchema);
+
+
+function pluck(arr) {
+  const randIndex = Math.floor(Math.random() * arr.length);
+  return arr[randIndex];
+}
+
 
 
 
@@ -139,7 +152,8 @@ const bookRoomIntentHandler = {
     console.log("numberOfPeople: ", numberOfPeople);
 
     const roomType = slots.roomType;
-    console.log("roomType: ", roomType);
+    let roomTypeValue = "";
+    console.log("roomType: ", roomType); // array
 
     const arrivalDate = slots.arrivalDate;
     console.log("arrivalDate: ", arrivalDate);
@@ -147,10 +161,79 @@ const bookRoomIntentHandler = {
     const duration = slots.Duration;
     console.log("duration: ", duration);
 
+    if (!numberOfPeople.value) {
+
+      const questions = [
+        "please tell me how many persons are you",
+        "how many people do you wanna book for",
+        "for how many people",
+        "how many people?"
+      ]
+      // look into database
+      // we can call an api
+
+      return handlerInput.responseBuilder
+        .speak(pluck(questions))
+        .reprompt(pluck(questions))
+        .getResponse();
+
+    } else if (!roomType.value) {
+
+      const questions = [
+        `ok, ${numberOfPeople.value} people. please tell me type of room. we have economy, standard and luxury rooms.`,
+        `for ${numberOfPeople.value} person, what type of room would you like to book. we have economy, standard and luxury rooms.`,
+        `What type of room would you like to reserve for ${numberOfPeople.value} person. we have economy, standard and luxury rooms.`
+      ]
+      // look into database
+      // we can call an api
+
+      return handlerInput.responseBuilder
+        .speak(pluck(questions))
+        .reprompt(pluck(questions))
+        .getResponse();
+    } else if (!arrivalDate.value) {
+
+      const questions = [
+        "please tell me when you are coming?",
+        "please tell me your checkin date?",
+        "when you are coming in our hotel?",
+        "What is your arrival date?",
+      ]
+      return handlerInput.responseBuilder
+        .speak(pluck(questions))
+        .reprompt(pluck(questions))
+        .getResponse();
+
+    } else if (!duration.value) {
+
+      const questions = [
+        `ok. ${roomType.value} room for ${numberOfPeople.value} people. how many nights? our checkout time is 11 in the morning`,
+        `book room for how many nights? our checkout time is Eleven in the morning`,
+        `for how many nights would you like to stay. our checkout time is Eleven in the morning`,
+        `for how many nights you will be staying in our hotel. our checkout time is Eleven in the morning `,
+      ]
+
+      return handlerInput.responseBuilder
+        .speak(pluck(questions))
+        .reprompt(pluck(questions))
+        .getResponse();
+    }
+
+    const vip = ["vip", "hi class", "premium", "best", "luxury"]
+    const standard = ["standard", "ordinary", "regular", "normal"]
+    const economy = ["economy", "low", "basic", "budget", "cheap"]
+
+    if (vip.includes(roomType)) {
+      roomTypeValue = "vip"
+    } else if (standard.includes(roomType)) {
+      roomTypeValue = "standard"
+    } else if (economy.includes(roomType)) {
+      roomTypeValue = "economy"
+    }
     try {
       let savedDoc = await bookingModel.create({
         numberOfPeople: numberOfPeople.value,
-        roomType: roomType.value,
+        roomType: roomTypeValue,
         arrivalDate: arrivalDate.value,
         duration: duration.value,
       })
@@ -159,12 +242,43 @@ const bookRoomIntentHandler = {
     } catch (e) {
       console.log("something went wrong while saving booking: ", e);
     }
-
     const speakOutput = `ok, your room for ${numberOfPeople.value} people is reserved for ${duration.value} night`;
-
     return handlerInput.responseBuilder
       .speak(speakOutput)
       // .reprompt('I am waiting for your response my friend, you can ask me my name')
+      .getResponse();
+
+
+  }
+};
+const singBirthdaySongIntentHandler = {
+  canHandle(handlerInput) {
+    return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+      && Alexa.getIntentName(handlerInput.requestEnvelope) === 'singBirthdaySong';
+  },
+  async handle(handlerInput) {
+
+    let speech = `<speak>
+                    <amazon:emotion name="excited" intensity="high">
+                        <s> 
+                            happy birthday to you 
+                        
+                            <break time="200ms"/>
+                            
+                            happy birthday to you dear Inzamam 
+                            
+                            <break time="100ms"/>
+                            
+                            happy birthday to you
+                        </s> 
+                    </amazon:emotion>
+                  </speak>`
+
+
+
+    return handlerInput.responseBuilder
+      .speak(speech)
+      // .reprompt()
       .getResponse();
 
   }
@@ -191,7 +305,8 @@ const skillBuilder = SkillBuilders.custom()
     HelloWorldIntentHandler,
     workExpIntentHandler,
     weatherIntentHandler,
-    bookRoomIntentHandler
+    bookRoomIntentHandler,
+    singBirthdaySongIntentHandler
   )
   .addErrorHandlers(
     ErrorHandler
