@@ -63,9 +63,40 @@ const LaunchRequestHandler = {
     })
     console.log("savedDoc: ", savedDoc);
 
+    async function getPlaybackInfo(handlerInput) {
+      const attributes = await handlerInput.attributesManager.getPersistentAttributes();
+      return attributes.playbackInfo;
+    }
+    let playbackInfo = "";
+    try {
+
+      playbackInfo = await getPlaybackInfo(handlerInput);
+    } catch (err) {
+      console.log(err);
+    }
+
+    console.log("playbackInfo: ", playbackInfo);
+
+    const playBehavior = 'REPLACE_ALL';
+    const podcastUrl = 'https://audio1.maxi80.com';
+
+
     return handlerInput.responseBuilder
       .speak(speakOutput)
-      .reprompt(speakOutput)
+      // .reprompt(speakOutput)
+      // .withSimpleCard('Hello and Welcome', 'I am virtual version of Mr.Inzamam Malik.')
+      // .withStandardCard(
+      //   "Hello and Welcome",
+      //   "I am virtual version of Mr.Inzamam Malik.",
+      //   "https://firebasestorage.googleapis.com/v0/b/abc-delete-this.appspot.com/o/images%2Fimg1.jpeg?alt=media&token=61b6d742-9866-4bb2-9495-e9904318784d",
+      //   "https://firebasestorage.googleapis.com/v0/b/abc-delete-this.appspot.com/o/images%2Fhumanoid_robot.jpeg?alt=media&token=0e9de3a6-4b68-423b-81a1-5d89dab16e88"
+      //   )
+      .addAudioPlayerPlayDirective(
+        playBehavior,
+        podcastUrl,
+        playbackInfo.token,
+        playbackInfo.offsetInMilliseconds
+      )
       .getResponse();
   }
 };
@@ -273,7 +304,6 @@ const singBirthdaySongIntentHandler = {
                         </s> 
                     </amazon:emotion>
                   </speak>`
-
 
 
     return handlerInput.responseBuilder
