@@ -14,20 +14,15 @@ mongoose.connection.on("error", () => {
   console.log("mongodb error");
 })
 
-const countingSchema = new mongoose.Schema({
-  intentName: String,
-  date: { type: Date, default: Date.now },
-});
-const countingModel = mongoose.model('Counting', countingSchema);
-
-const bookingSchema = new mongoose.Schema({
-  numberOfPeople: String,
-  roomType: String,
-  arrivalDate: String,
-  duration: String,
+const orderSchema = new mongoose.Schema({
+  topping: String,
+  size: String,
+  qty: Number,
+  name: String,
+  address: String,
   createdOn: { type: Date, default: Date.now },
 });
-const bookingModel = mongoose.model('Booking', bookingSchema);
+const orderModel = mongoose.model('Orders', orderSchema);
 
 
 function pluck(arr) {
@@ -71,18 +66,103 @@ const LaunchRequestHandler = {
       .getResponse();
   }
 };
-const HelloWorldIntentHandler = {
+const placeOrderIntentHandler = {
   canHandle(handlerInput) {
     return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-      && Alexa.getIntentName(handlerInput.requestEnvelope) === 'nameIntent';
+      && Alexa.getIntentName(handlerInput.requestEnvelope) === 'placeOrder';
   },
-  handle(handlerInput) {
-    const speakOutput = 'My name is Muhammad Inzamam Malik, my friends call me Malik, would you like to know about my work experiance?';
+  async handle(handlerInput) {
+    console.log("request came: ", JSON.stringify(handlerInput.requestEnvelope));
 
-    return handlerInput.responseBuilder
-      .speak(speakOutput)
-      .reprompt('to know my work experiance say. what is your work experiance')
-      .getResponse();
+    const topping = Alexa.getSlot(handlerInput.requestEnvelope, "topping");
+    const size = Alexa.getSlot(handlerInput.requestEnvelope, "size");
+    const qty = Alexa.getSlot(handlerInput.requestEnvelope, "qty");
+
+    console.log("topping: ", topping);
+    console.log("size: ", size);
+    console.log("qty: ", qty);
+
+    if (!topping.value) {
+      const speakOutput = `
+          <speak>
+            <voice name="Justin">
+              <amazon:emotion name="excited" intensity="medium">
+                <p>
+                  <s> What topping would you like to have </s>
+                  <s> We have pepperoni, ranch and Fajita </s>
+                </p>
+              </amazon:emotion>
+            </voice>
+          </speak>
+      `;
+      return handlerInput.responseBuilder
+        .speak(speakOutput)
+        .reprompt(speakOutput)
+        .getResponse();
+
+    } else if (!size.value) {
+      const speakOutput = `
+            <speak>
+              <voice name="Justin">
+                <amazon:emotion name="excited" intensity="medium">
+                  <p>
+                    <s> ok </s>
+                    <s>  ${topping.value} pizza, what size would you like to order</s>
+                    <s> We have Large that serves 4, medium that serves 2, and small that serves 1 </s>
+                  </p>
+                </amazon:emotion>
+              </voice>
+            </speak> 
+      `;
+      return handlerInput.responseBuilder
+        .speak(speakOutput)
+        .reprompt(speakOutput)
+        .getResponse();
+
+    } else {
+
+
+      const apiAccessToken = Alexa.getApiAccessToken(handlerInput.requestEnvelope);
+
+      const fullName = await axios.get("https://api.amazonalexa.com/v2/accounts/~current/settings/Profile.name", {
+        headers: { Authorization: `Bearer ${apiAccessToken}` }
+      })
+      const email = await axios.get("https://api.amazonalexa.com/v2/accounts/~current/settings/Profile.email", {
+        headers: { Authorization: `Bearer ${apiAccessToken}` }
+      })
+
+      console.log("fullName: ", fullName.data);
+      console.log("email: ", email.data);
+
+
+
+      let savedDoc = await orderModel.create({
+        topping: topping.value,
+        size: size.value,
+        qty: qty.value,
+        name: fullName.data,
+        address: email.data
+      })
+      console.log("savedDoc: ", savedDoc);
+
+      const speakOutput = `
+          <speak>
+            <voice name="Justin">
+              <amazon:emotion name="excited" intensity="medium">
+                <p>
+                  <s> Thank you! </s>
+                  <s> Your order is placed </s>
+                </p>
+              </amazon:emotion>
+            </voice>
+          </speak>
+      `;
+      return handlerInput.responseBuilder
+        .speak(speakOutput)
+        // .reprompt('to know my work experiance say. what is your work experiance')
+        .getResponse();
+
+    }
   }
 };
 
@@ -106,13 +186,14 @@ const ErrorHandler = {
 const skillBuilder = SkillBuilders.custom()
   .addRequestHandlers(
     LaunchRequestHandler,
-    HelloWorldIntentHandler
+    placeOrderIntentHandler
   )
   .addErrorHandlers(
     ErrorHandler
   )
 const skill = skillBuilder.create();
 const adapter = new ExpressAdapter(skill, false, false);
+
 
 
 
