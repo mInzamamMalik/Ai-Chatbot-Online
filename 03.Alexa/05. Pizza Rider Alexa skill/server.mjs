@@ -4,6 +4,7 @@ import morgan from "morgan";
 import { ExpressAdapter } from 'ask-sdk-express-adapter';
 import axios from "axios";
 import mongoose from "mongoose";
+import moment from "moment";
 
 mongoose.connect("mongodb+srv://user123:user123@testcluster123.nr4e4.mongodb.net/alexaclassdb?retryWrites=true&w=majority")
 
@@ -20,6 +21,7 @@ const orderSchema = new mongoose.Schema({
   qty: Number,
   name: String,
   address: String,
+  status: { type: String, default: "PENDING" }, // PENDING, PREPARING/CANCELED, DISPATCHED, DELIVERED
   createdOn: { type: Date, default: Date.now },
 });
 const orderModel = mongoose.model('Orders', orderSchema);
@@ -29,8 +31,6 @@ function pluck(arr) {
   const randIndex = Math.floor(Math.random() * arr.length);
   return arr[randIndex];
 }
-
-
 
 
 const app = express();
@@ -165,7 +165,183 @@ const placeOrderIntentHandler = {
     }
   }
 };
+const checkOrderIntentHandler = {
+  canHandle(handlerInput) {
+    return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+      && Alexa.getIntentName(handlerInput.requestEnvelope) === 'checkOrder';
+  },
+  async handle(handlerInput) {
+    // console.log("request came: ", JSON.stringify(handlerInput.requestEnvelope));
 
+    const apiAccessToken = Alexa.getApiAccessToken(handlerInput.requestEnvelope);
+
+    const fullName = await axios.get("https://api.amazonalexa.com/v2/accounts/~current/settings/Profile.name", {
+      headers: { Authorization: `Bearer ${apiAccessToken}` }
+    })
+    const email = await axios.get("https://api.amazonalexa.com/v2/accounts/~current/settings/Profile.email", {
+      headers: { Authorization: `Bearer ${apiAccessToken}` }
+    })
+
+    console.log("fullName: ", fullName.data);
+    console.log("email: ", email.data);
+
+    const lastOrder = await orderModel
+      .findOne({ email: email.data })
+      .sort({ _id: -1 })
+      .exec()
+
+    const lastOrderDate = moment(lastOrder.createdOn).fromNow();
+    console.log("lastOrderDate: ", lastOrderDate);
+
+    let speakOutput = "";
+
+    if (lastOrder.status === "DELIVERED") {
+      speakOutput = `
+        <speak>
+          <voice name="Justin">
+            <amazon:emotion name="excited" intensity="medium">
+              <p>
+                <s> Dear customer ${fullName.data}! your last order of 
+                    ${lastOrder.qty} ${lastOrder.topping} pizza was placed ${lastOrderDate}
+                    and it was delivered successfully. </s>
+                <s>you have no order in progress</s>
+                <s>please feel free to say "order pizza" or "repeat my last order" whenever you want</s>
+                <s> I am your pizza rider, Happy to help</s>
+              </p>
+            </amazon:emotion>
+          </voice>
+        </speak>
+        `;
+    } else { // PENDING, PREPARING/CANCELED, DISPATCHED, DELIVERED
+      speakOutput = `
+        <speak>
+          <voice name="Justin">
+            <amazon:emotion name="excited" intensity="medium">
+              <p>
+                <s> Dear customer ${fullName.data}! your order of 
+                    ${lastOrder.qty} ${lastOrder.topping} pizza was placed ${lastOrderDate}
+                    and it is ${lastOrder.status}. </s>
+                <s> Please be patient, your order is our highest priority.</s>
+              </p>
+            </amazon:emotion>
+          </voice>
+        </speak>
+      `;
+    }
+
+    return handlerInput.responseBuilder
+      .speak(speakOutput)
+      // .reprompt('to know my work experiance say. what is your work experiance')
+      .getResponse();
+
+  }
+};
+const repeatOrderIntentHandler = {
+  canHandle(handlerInput) {
+    return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+      && Alexa.getIntentName(handlerInput.requestEnvelope) === 'repeatOrder';
+  },
+  async handle(handlerInput) {
+    console.log("request came: ", JSON.stringify(handlerInput.requestEnvelope));
+
+    const apiAccessToken = Alexa.getApiAccessToken(handlerInput.requestEnvelope);
+
+    const fullName = await axios.get("https://api.amazonalexa.com/v2/accounts/~current/settings/Profile.name", {
+      headers: { Authorization: `Bearer ${apiAccessToken}` }
+    })
+    const email = await axios.get("https://api.amazonalexa.com/v2/accounts/~current/settings/Profile.email", {
+      headers: { Authorization: `Bearer ${apiAccessToken}` }
+    })
+
+    console.log("fullName: ", fullName.data);
+    console.log("email: ", email.data);
+
+    const lastOrder = await orderModel
+      .findOne({ email: email.data })
+      .sort({ _id: -1 })
+      .exec()
+
+    const lastOrderDate = moment(lastOrder.createdOn).fromNow();
+    console.log("lastOrderDate: ", lastOrderDate);
+    try {
+
+
+      let speakOutput = "";
+
+      if (handlerInput.requestEnvelope.request.intent.confirmationStatus === "NONE") {
+
+        speakOutput = `
+          <speak>
+            <voice name="Justin">
+              <amazon:emotion name="excited" intensity="medium">
+                <p>
+                  <s> Dear customer ${fullName.data}! I heard you want to 
+                  repeat your last order of ${lastOrder.qty} ${lastOrder.size} ${lastOrder.topping} pizza.</s>
+                  <s> is that correct?</s>
+                </p>
+              </amazon:emotion>
+            </voice>
+          </speak>
+        `;
+        return handlerInput.responseBuilder
+          .speak(speakOutput)
+          // .reprompt(speakOutput)
+          .addConfirmIntentDirective(handlerInput.requestEnvelope.request.intent)
+          .getResponse();
+
+      } else if (handlerInput.requestEnvelope.request.intent.confirmationStatus === "DENIED") {
+
+        speakOutput = `
+          <speak>
+            <voice name="Justin">
+              <amazon:emotion name="excited" intensity="medium">
+                <p>
+                  <s> okay, no order was placed</s>
+                  <s> please feel free to say "order pizza" or "repeat my last order" whenever you want. </s>
+                  <s> I am your pizza rider, Happy to help</s>
+                </p>
+              </amazon:emotion>
+            </voice>
+          </speak>
+        `;
+        return handlerInput.responseBuilder
+          .speak(speakOutput)
+          .getResponse();
+      } else if (handlerInput.requestEnvelope.request.intent.confirmationStatus === "CONFIRMED") {
+
+        let savedDoc = await orderModel.create({
+          topping: lastOrder.topping,
+          size: lastOrder.size,
+          qty: lastOrder.qty,
+          name: fullName.data,
+          address: email.data
+        })
+        console.log("savedDoc: ", savedDoc);
+
+        speakOutput = `
+          <speak>
+            <voice name="Justin">
+              <amazon:emotion name="excited" intensity="medium">
+                <p>
+                  <s> okay, order placed for ${lastOrder.qty} ${lastOrder.size} ${lastOrder.topping} pizza.</s>
+                  <s> Please be patient, your order is our highest priority. </s>
+                  <s> you can ask me about your order any time. </s>
+                </p>
+              </amazon:emotion>
+            </voice>
+          </speak>
+        `;
+        return handlerInput.responseBuilder
+          .speak(speakOutput)
+          .getResponse();
+      }
+
+    } catch (error) {
+      console.log("my error: ", error);
+    }
+
+  }
+};
 
 const ErrorHandler = {
   canHandle() {
@@ -186,7 +362,9 @@ const ErrorHandler = {
 const skillBuilder = SkillBuilders.custom()
   .addRequestHandlers(
     LaunchRequestHandler,
-    placeOrderIntentHandler
+    placeOrderIntentHandler,
+    checkOrderIntentHandler,
+    repeatOrderIntentHandler
   )
   .addErrorHandlers(
     ErrorHandler
