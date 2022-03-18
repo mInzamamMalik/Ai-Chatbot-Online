@@ -82,8 +82,11 @@ const placeOrderIntentHandler = {
     console.log("size: ", size);
     console.log("qty: ", qty);
 
-    if (!topping.value) {
-      const speakOutput = `
+    try {
+
+
+      if (!topping.value) {
+        const speakOutput = `
           <speak>
             <voice name="Justin">
               <amazon:emotion name="excited" intensity="medium">
@@ -95,13 +98,14 @@ const placeOrderIntentHandler = {
             </voice>
           </speak>
       `;
-      return handlerInput.responseBuilder
-        .speak(speakOutput)
-        .reprompt(speakOutput)
-        .getResponse();
+        return handlerInput.responseBuilder
+          .speak(speakOutput)
+          // .reprompt(speakOutput)
+          .addElicitSlotDirective("topping")
+          .getResponse();
 
-    } else if (!size.value) {
-      const speakOutput = `
+      } else if (!size.value) {
+        const speakOutput = `
             <speak>
               <voice name="Justin">
                 <amazon:emotion name="excited" intensity="medium">
@@ -114,38 +118,58 @@ const placeOrderIntentHandler = {
               </voice>
             </speak> 
       `;
-      return handlerInput.responseBuilder
-        .speak(speakOutput)
-        .reprompt(speakOutput)
-        .getResponse();
+        return handlerInput.responseBuilder
+          .speak(speakOutput)
+          // .reprompt(speakOutput)
+          .addElicitSlotDirective("size")
+          .getResponse();
 
-    } else {
+      } else if (!qty.value) {
+        const speakOutput = `
+          <speak>
+            <voice name="Justin">
+              <amazon:emotion name="excited" intensity="medium">
+                <p>
+                  <s> ok ${size.value} ${topping.value} pizza </s> 
+                  <s> How many? </s>
+                  <s> you can say a number like one, two or three </s>
+                </p>
+              </amazon:emotion>
+            </voice>
+          </speak>
+      `;
+        return handlerInput.responseBuilder
+          .speak(speakOutput)
+          // .reprompt(speakOutput)
+          .addElicitSlotDirective("qty")
+          .getResponse();
+
+      } else {
+
+        const apiAccessToken = Alexa.getApiAccessToken(handlerInput.requestEnvelope);
+
+        const fullName = await axios.get("https://api.amazonalexa.com/v2/accounts/~current/settings/Profile.name", {
+          headers: { Authorization: `Bearer ${apiAccessToken}` }
+        })
+        const email = await axios.get("https://api.amazonalexa.com/v2/accounts/~current/settings/Profile.email", {
+          headers: { Authorization: `Bearer ${apiAccessToken}` }
+        })
+
+        console.log("fullName: ", fullName.data);
+        console.log("email: ", email.data);
 
 
-      const apiAccessToken = Alexa.getApiAccessToken(handlerInput.requestEnvelope);
 
-      const fullName = await axios.get("https://api.amazonalexa.com/v2/accounts/~current/settings/Profile.name", {
-        headers: { Authorization: `Bearer ${apiAccessToken}` }
-      })
-      const email = await axios.get("https://api.amazonalexa.com/v2/accounts/~current/settings/Profile.email", {
-        headers: { Authorization: `Bearer ${apiAccessToken}` }
-      })
+        let savedDoc = await orderModel.create({
+          topping: topping.value,
+          size: size.value,
+          qty: qty.value,
+          name: fullName.data,
+          address: email.data
+        })
+        console.log("savedDoc: ", savedDoc);
 
-      console.log("fullName: ", fullName.data);
-      console.log("email: ", email.data);
-
-
-
-      let savedDoc = await orderModel.create({
-        topping: topping.value,
-        size: size.value,
-        qty: qty.value,
-        name: fullName.data,
-        address: email.data
-      })
-      console.log("savedDoc: ", savedDoc);
-
-      const speakOutput = `
+        const speakOutput = `
           <speak>
             <voice name="Justin">
               <amazon:emotion name="excited" intensity="medium">
@@ -157,11 +181,14 @@ const placeOrderIntentHandler = {
             </voice>
           </speak>
       `;
-      return handlerInput.responseBuilder
-        .speak(speakOutput)
-        // .reprompt('to know my work experiance say. what is your work experiance')
-        .getResponse();
+        return handlerInput.responseBuilder
+          .speak(speakOutput)
+          // .reprompt('to know my work experiance say. what is your work experiance')
+          .getResponse();
 
+      }
+    } catch (error) {
+      console.log("my error: ", error);
     }
   }
 };
