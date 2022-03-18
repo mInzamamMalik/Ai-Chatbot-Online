@@ -323,7 +323,7 @@ const repeatOrderIntentHandler = {
             <voice name="Justin">
               <amazon:emotion name="excited" intensity="medium">
                 <p>
-                  <s> okay, no order was placed</s>
+                  <s> okay, Canceled </s>
                   <s> please feel free to say "order pizza" or "repeat my last order" whenever you want. </s>
                   <s> I am your pizza rider, Happy to help</s>
                 </p>
