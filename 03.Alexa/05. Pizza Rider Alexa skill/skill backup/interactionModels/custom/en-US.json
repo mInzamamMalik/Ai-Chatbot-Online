@@ -1,0 +1,253 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "pizza rider",
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "placeOrder",
+          "slots": [
+            {
+              "name": "topping",
+              "type": "Toppings",
+              "samples": [
+                "{topping} pizza"
+              ]
+            },
+            {
+              "name": "size",
+              "type": "Sizes",
+              "samples": [
+                "{size}",
+                "{size} pizza"
+              ]
+            },
+            {
+              "name": "qty",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "just {qty}",
+                "{qty} pizza",
+                "{qty} "
+              ]
+            }
+          ],
+          "samples": [
+            "{size} pizza",
+            "{topping} pizza",
+            "I want {size} {topping} pizza",
+            "I want {topping} pizza",
+            "give me a {size} pizza",
+            "what pizzas do you have",
+            "order pizza",
+            "give me pizza",
+            "give me something to eat",
+            "I am hungry",
+            "I want pizza"
+          ]
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.FallbackIntent",
+          "samples": []
+        },
+        {
+          "name": "checkOrder",
+          "slots": [],
+          "samples": [
+            "where is my pizza",
+            "where are you",
+            "what the fuck",
+            "where is my food",
+            "what is the status of last order",
+            "what is the status of my order"
+          ]
+        },
+        {
+          "name": "repeatOrder",
+          "slots": [],
+          "samples": [
+            "order again",
+            "reorder",
+            "repeat my last order",
+            "repeat order"
+          ]
+        }
+      ],
+      "types": [
+        {
+          "values": [
+            {
+              "name": {
+                "value": "ranch"
+              }
+            },
+            {
+              "name": {
+                "value": "fajita"
+              }
+            },
+            {
+              "name": {
+                "value": "pepperoni"
+              }
+            }
+          ],
+          "name": "Toppings"
+        },
+        {
+          "values": [
+            {
+              "name": {
+                "value": "large",
+                "synonyms": [
+                  "serves 4",
+                  "4 serving",
+                  "4 person",
+                  "large"
+                ]
+              }
+            },
+            {
+              "name": {
+                "value": "medium",
+                "synonyms": [
+                  "regular",
+                  "standard",
+                  "serves 2",
+                  "2 person",
+                  "medium"
+                ]
+              }
+            },
+            {
+              "name": {
+                "value": "small",
+                "synonyms": [
+                  "single",
+                  "small"
+                ]
+              }
+            }
+          ],
+          "name": "Sizes"
+        }
+      ]
+    },
+    "dialog": {
+      "intents": [
+        {
+          "name": "placeOrder",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "topping",
+              "type": "Toppings",
+              "elicitationRequired": true,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.255348272571.205871793941"
+              }
+            },
+            {
+              "name": "size",
+              "type": "Sizes",
+              "elicitationRequired": true,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1559874139389.366447577721"
+              }
+            },
+            {
+              "name": "qty",
+              "type": "AMAZON.NUMBER",
+              "elicitationRequired": true,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1559874139389.165366312179"
+              }
+            }
+          ],
+          "delegationStrategy": "SKILL_RESPONSE"
+        },
+        {
+          "name": "repeatOrder",
+          "confirmationRequired": true,
+          "prompts": {
+            "confirmation": "Confirm.Intent.320760563544"
+          },
+          "slots": [],
+          "delegationStrategy": "SKILL_RESPONSE"
+        }
+      ],
+      "delegationStrategy": "ALWAYS"
+    },
+    "prompts": [
+      {
+        "id": "Elicit.Slot.1359803472947.377248272673",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "what size of {topping} pizza, we have large, medium and small"
+          },
+          {
+            "type": "PlainText",
+            "value": "ok {topping} pizza, what size would you like it in, we have large, medium and small"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.255348272571.205871793941",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "what topping would you like to have"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.1559874139389.366447577721",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "what size"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.1559874139389.165366312179",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "how many  {size} {topping} would you like"
+          }
+        ]
+      },
+      {
+        "id": "Confirm.Intent.320760563544",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "I heard you want to repeat your last order, is that correct?"
+          }
+        ]
+      }
+    ]
+  },
+  "version": "14"
+}
