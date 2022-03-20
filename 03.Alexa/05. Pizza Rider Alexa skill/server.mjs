@@ -425,6 +425,37 @@ const themeSongIntentHandler = {
       .getResponse();
   }
 };
+const talkToPersonIntentHandler = {
+  canHandle(handlerInput) {
+    return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+      && Alexa.getIntentName(handlerInput.requestEnvelope) === 'talkToPerson';
+  },
+  async handle(handlerInput) {
+
+    console.log("talkToPersonIntentHandler");
+    const url = "https://firebasestorage.googleapis.com/v0/b/abc-delete-this.appspot.com/o/output.mp3?alt=media&token=8b4874d8-111b-44be-b408-b819bd178282"
+    const escapedUrl = Alexa.escapeXmlCharacters(url);
+
+    console.log("escapedUrl: ", escapedUrl);
+
+    const speakOutput = `
+          <speak>
+            <voice name="Justin">
+              <amazon:emotion name="excited" intensity="medium">
+                <p>
+                  <s> Ok I am playing a real person voice now</s>
+                </p>
+              </amazon:emotion>
+            </voice>
+            <audio src="${escapedUrl}" />
+          </speak>
+        `;
+
+    return handlerInput.responseBuilder
+      .speak(speakOutput)
+      .getResponse();
+  }
+};
 
 const ErrorHandler = {
   canHandle() {
@@ -448,7 +479,8 @@ const skillBuilder = SkillBuilders.custom()
     placeOrderIntentHandler,
     checkOrderIntentHandler,
     repeatOrderIntentHandler,
-    themeSongIntentHandler
+    themeSongIntentHandler,
+    talkToPersonIntentHandler
   )
   .addErrorHandlers(
     ErrorHandler
