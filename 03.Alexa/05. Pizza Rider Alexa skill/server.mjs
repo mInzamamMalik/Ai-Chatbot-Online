@@ -411,7 +411,8 @@ const themeSongIntentHandler = {
         ]
       }
     }
-
+    // when using audio player, dont forget to enable audio player interface in alexa skill kit dashboard.
+    // build > interfaces > enable audio player > save interfaces > build model.
     return handlerInput.responseBuilder
       .speak(speakOutput)
       .addAudioPlayerPlayDirective("REPLACE_ALL",
