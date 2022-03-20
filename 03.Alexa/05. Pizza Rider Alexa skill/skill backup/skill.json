@@ -1,61 +1,287 @@
 {
-  "manifest": {
-    "apis": {
-      "custom": {
-        "endpoint": {
-          "sslCertificateType": "Wildcard",
-          "uri": "https://39cb-111-88-42-154.ngrok.io/api/v1/webhook-alexa"
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "pizza rider",
+            "intents": [
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "placeOrder",
+                    "slots": [
+                        {
+                            "name": "topping",
+                            "type": "Toppings",
+                            "samples": [
+                                "{topping} pizza"
+                            ]
+                        },
+                        {
+                            "name": "size",
+                            "type": "Sizes",
+                            "samples": [
+                                "{size}",
+                                "{size} pizza"
+                            ]
+                        },
+                        {
+                            "name": "qty",
+                            "type": "AMAZON.NUMBER",
+                            "samples": [
+                                "just {qty}",
+                                "{qty} pizza",
+                                "{qty} "
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "place order",
+                        "{size} pizza",
+                        "{topping} pizza",
+                        "I want {size} {topping} pizza",
+                        "I want {topping} pizza",
+                        "give me a {size} pizza",
+                        "what pizzas do you have",
+                        "order pizza",
+                        "give me pizza",
+                        "give me something to eat",
+                        "I am hungry",
+                        "I want pizza"
+                    ]
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.FallbackIntent",
+                    "samples": []
+                },
+                {
+                    "name": "checkOrder",
+                    "slots": [],
+                    "samples": [
+                        "where is my pizza",
+                        "where are you",
+                        "what the fuck",
+                        "where is my food",
+                        "what is the status of last order",
+                        "what is the status of my order"
+                    ]
+                },
+                {
+                    "name": "repeatOrder",
+                    "slots": [],
+                    "samples": [
+                        "order again",
+                        "repeat my last order",
+                        "repeat order"
+                    ]
+                },
+                {
+                    "name": "themeSong",
+                    "slots": [],
+                    "samples": [
+                        "play the theme song",
+                        "play a theme song",
+                        "what is your theme",
+                        "sing for me",
+                        "give me a song",
+                        "start playing theme song",
+                        "play theme song",
+                        "what is your theme song",
+                        "sing me a song",
+                        "song",
+                        "theme song"
+                    ]
+                },
+                {
+                    "name": "AMAZON.PauseIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.ResumeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "talkToPerson",
+                    "slots": [],
+                    "samples": [
+                        "real person",
+                        "person",
+                        "I want to talk to real person",
+                        "talk to real person"
+                    ]
+                }
+            ],
+            "types": [
+                {
+                    "name": "Toppings",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "ranch"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "fajita"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "pepperoni"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Sizes",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "large",
+                                "synonyms": [
+                                    "serves 4",
+                                    "4 serving",
+                                    "4 person",
+                                    "large"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "medium",
+                                "synonyms": [
+                                    "regular",
+                                    "standard",
+                                    "serves 2",
+                                    "2 person",
+                                    "medium"
+                                ]
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "small",
+                                "synonyms": [
+                                    "single",
+                                    "small"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
         },
-        "interfaces": []
-      }
-    },
-    "manifestVersion": "1.0",
-    "permissions": [
-      {
-        "name": "alexa::devices:all:address:full:read"
-      },
-      {
-        "name": "alexa::profile:name:read"
-      },
-      {
-        "name": "alexa::profile:email:read"
-      },
-      {
-        "name": "alexa::profile:mobile_number:read"
-      }
-    ],
-    "privacyAndCompliance": {
-      "allowsPurchases": false,
-      "containsAds": false,
-      "isChildDirected": false,
-      "isExportCompliant": true,
-      "locales": {
-        "en-US": {}
-      },
-      "usesPersonalInfo": true
-    },
-    "publishingInformation": {
-      "automaticDistribution": {
-        "isActive": false
-      },
-      "category": "KNOWLEDGE_AND_TRIVIA",
-      "distributionCountries": [],
-      "distributionMode": "PUBLIC",
-      "isAvailableWorldwide": true,
-      "locales": {
-        "en-US": {
-          "description": "Sample Full Description",
-          "examplePhrases": [
-            "Alexa open hello world",
-            "hello",
-            "help"
-          ],
-          "keywords": [],
-          "name": "pizza rider",
-          "summary": "Sample Short Description"
-        }
-      },
-      "testingInstructions": "sdflaks;fkasdf asg;sdagf"
+        "dialog": {
+            "intents": [
+                {
+                    "name": "placeOrder",
+                    "delegationStrategy": "SKILL_RESPONSE",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "topping",
+                            "type": "Toppings",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.255348272571.205871793941"
+                            }
+                        },
+                        {
+                            "name": "size",
+                            "type": "Sizes",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1559874139389.366447577721"
+                            }
+                        },
+                        {
+                            "name": "qty",
+                            "type": "AMAZON.NUMBER",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1559874139389.165366312179"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "repeatOrder",
+                    "delegationStrategy": "SKILL_RESPONSE",
+                    "confirmationRequired": true,
+                    "prompts": {
+                        "confirmation": "Confirm.Intent.320760563544"
+                    },
+                    "slots": []
+                }
+            ],
+            "delegationStrategy": "ALWAYS"
+        },
+        "prompts": [
+            {
+                "id": "Elicit.Slot.1359803472947.377248272673",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "what size of {topping} pizza, we have large, medium and small"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "ok {topping} pizza, what size would you like it in, we have large, medium and small"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.255348272571.205871793941",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "what topping would you like to have"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1559874139389.366447577721",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "what size"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1559874139389.165366312179",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "how many  {size} {topping} would you like"
+                    }
+                ]
+            },
+            {
+                "id": "Confirm.Intent.320760563544",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "I heard you want to repeat your last order, is that correct?"
+                    }
+                ]
+            }
+        ]
     }
-  }
 }
