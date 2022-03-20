@@ -369,6 +369,61 @@ const repeatOrderIntentHandler = {
 
   }
 };
+const themeSongIntentHandler = {
+  canHandle(handlerInput) {
+    return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+      && Alexa.getIntentName(handlerInput.requestEnvelope) === 'themeSong';
+  },
+  async handle(handlerInput) {
+    const speakOutput = `
+          <speak>
+            <voice name="Justin">
+              <amazon:emotion name="excited" intensity="medium">
+                <p>
+                  <s> Here is the Song</s>
+                </p>
+              </amazon:emotion>
+            </voice>
+          </speak>
+        `;
+
+    const metadata = {
+      "title": "Theme song",
+      "subtitle": "Pizza Rider theme",
+      "art": {
+        "sources": [
+          {
+            "contentDescription": "example image",
+            "url": "https://s3.amazonaws.com/cdn.dabblelab.com/img/audiostream-starter-512x512.png",
+            "widthPixels": 512,
+            "heightPixels": 512
+          }
+        ]
+      },
+      "backgroundImage": {
+        "sources": [
+          {
+            "contentDescription": "example image",
+            "url": "https://s3.amazonaws.com/cdn.dabblelab.com/img/wayfarer-on-beach-1200x800.png",
+            "widthPixels": 1200,
+            "heightPixels": 800
+          }
+        ]
+      }
+    }
+
+    return handlerInput.responseBuilder
+      .speak(speakOutput)
+      .addAudioPlayerPlayDirective("REPLACE_ALL",
+        "https://firebasestorage.googleapis.com/v0/b/abc-delete-this.appspot.com/o/price-of-freedom-33106.mp3?alt=media&token=97d88d77-9bd5-453d-9436-87679119d403",
+        "streamid123",
+        0,
+        null,
+        metadata
+      )
+      .getResponse();
+  }
+};
 
 const ErrorHandler = {
   canHandle() {
@@ -391,7 +446,8 @@ const skillBuilder = SkillBuilders.custom()
     LaunchRequestHandler,
     placeOrderIntentHandler,
     checkOrderIntentHandler,
-    repeatOrderIntentHandler
+    repeatOrderIntentHandler,
+    themeSongIntentHandler
   )
   .addErrorHandlers(
     ErrorHandler
