@@ -6,10 +6,16 @@ import { useState } from "react";
 function Room() {
 
   const [isLit, setLit] = useState(true);
-  
+
   const toggle = () => {
-    setLit(!isLit);
-    console.log("I am running");
+
+    // setLit(!isLit);
+    
+    setLit(function (prevIsLit) {
+      return !prevIsLit
+    });
+
+    console.log("I am running: ", isLit);
   }
 
   return (
