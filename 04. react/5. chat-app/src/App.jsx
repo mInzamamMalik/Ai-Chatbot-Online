@@ -3,6 +3,8 @@ import './App.css';
 
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Button, Form, Stack, Container, Row, Col } from 'react-bootstrap';
+
 
 
 function ChatWindow() {
@@ -36,21 +38,40 @@ function ChatWindow() {
 
 
   return <>
-    <h1>Chat app</h1>
+    <h1 className='heading'>CHAT APP</h1>
 
-    <form onSubmit={sendMessage}>
-      <input type="text" onChange={(e) => { setUserText(e.target.value) }} />
+    <form onSubmit={sendMessage} className="form">
 
-      <button>Send</button>
+      <Stack direction="horizontal" gap={3}>
+        <Form.Control className="me-auto inputField" type="text" placeholder="Enter your text here" onChange={(e) => { setUserText(e.target.value) }} />
+        <Button variant="secondary" className='submitButton'>Submit</Button>
+      </Stack>
+
     </form>
 
     <div>
-      {messages.map((eachMessage, index) => (
-        <>
-          <h3>{eachMessage.sender}: </h3>
-          <p>{eachMessage.text}</p>
-        </>
-      ))}
+
+
+      <Container>
+        {messages.map((eachMessage, index) => (
+          (eachMessage.sender === "user") ?
+            (<Row >
+              <Col xs={3}></Col>
+              <Col className='message user-message'>{eachMessage.text}</Col>
+            </Row>)
+            :
+            (<Row >
+              <Col className='message chatbot-message'>{eachMessage.text}</Col>
+              <Col xs={3}></Col>
+            </Row>)
+
+        ))}
+      </Container>
+
+
+
+
+
     </div>
 
 
