@@ -1,9 +1,13 @@
 import express from "express";
 import morgan from "morgan";
 import { WebhookClient } from 'dialogflow-fulfillment';
+import bodyParser from "body-parser";
+import twilio from "twilio"
+
 
 const app = express();
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(morgan("dev"));
 
 app.get("/", (req, res) => {
@@ -44,6 +48,21 @@ app.post("/webhook", (request, response) => {
     _agent.handleRequest(intentMap);
 
 });
+
+
+app.post("/twiliowebhook", (req, res, next) => {
+
+    let response = new twilio.twiml.MessagingResponse()
+
+    console.log("twiliowebhook");
+    console.log(req.body);
+
+    // todo: call dialogflow
+
+    response.message("response from custom tier");
+    res.send(response.toString());
+
+})
 
 app.listen(3000, () => {
     console.log("Example app listening on port 3000!");
