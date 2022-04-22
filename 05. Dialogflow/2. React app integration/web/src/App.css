@@ -1,0 +1,48 @@
+.heading {
+  color: #252A34;
+  padding: 20px;
+  text-align: center;
+}
+
+* {
+  color: #252A34
+}
+
+.form {
+  background-color: #08D9D6;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.message {
+  padding: 10px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  min-width: 20%;
+  max-width: 80%;
+  color: #EAEAEA !important;
+}
+
+.chatbot-message {
+  background-color: #FF2E63;
+  border-radius: 20px 20px 20px 0;
+
+}
+
+.user-message {
+  background-color: #252A34;
+  text-align: right;
+  border-radius: 20px 20px 0px 20px;
+
+}
+
+.inputField{
+  border: 2px solid #252A34 !important;
+  border-radius: 20px !important;
+}
+.submitButton{
+  background-color: #252A34 !important;
+  border-radius: 20px !important;
+
+}
