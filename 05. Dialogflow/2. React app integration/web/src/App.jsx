@@ -39,11 +39,19 @@ function ChatWindow() {
 
 
 
-    let audioFile = new Audio(audioBufer);
+    
+    let dataUrl = btoa(String.fromCharCode(...new Uint8Array(audioBufer.data)));
+
+    let audioFile = new Audio(dataUrl);
     audioFile.play();
 
 
-    
+
+    document.querySelector("#myaudio").src = "data:audio/mp3;base64," + dataUrl;
+    document.querySelector("#myaudio").play()
+
+
+
 
 
     setMessages((prev) => (
