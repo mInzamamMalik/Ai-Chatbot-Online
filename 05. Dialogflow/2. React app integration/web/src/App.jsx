@@ -20,7 +20,7 @@ function ChatWindow() {
   const sendMessage = async (e) => {
     e.preventDefault();
 
-    if(userText.trim() === "") return;
+    if (userText.trim() === "") return;
 
     console.log("sendMessage");
 
@@ -32,6 +32,19 @@ function ChatWindow() {
     const response = await axios.post("http://localhost:5001/talktochatbot", {
       query: userText,
     })
+    console.log("response.data: ", response.data);
+
+    let audioBufer = response.data.pop().audio;
+    console.log("audioBufer: ", audioBufer);
+
+
+
+    let audioFile = new Audio(audioBufer);
+    audioFile.play();
+
+
+    
+
 
     setMessages((prev) => (
       [...response.data, ...prev]
@@ -44,6 +57,8 @@ function ChatWindow() {
 
 
   return <>
+    <audio controls id="myaudio"></audio>
+
     <h1 className='heading'>CHAT APP</h1>
 
     <form onSubmit={sendMessage} className="form">

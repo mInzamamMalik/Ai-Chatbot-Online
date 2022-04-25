@@ -148,6 +148,8 @@ app.post("/talktochatbot", async (req, res, next) => {
     // Send request and log result
     const responses = await sessionClient.detectIntent(request);
 
+    console.log("responses: ", responses);
+
     let messages = [];
 
     responses[0]?.queryResult?.fulfillmentMessages?.map(eachMessage => {
@@ -155,10 +157,11 @@ app.post("/talktochatbot", async (req, res, next) => {
 
             messages.push({
                 sender: "chatbot",
-                text: eachMessage.text.text[0]
+                text: eachMessage?.text?.text[0]
             })
         }
     })
+    messages.push({ sender: "chatbot", audio: responses[0]?.outputAudio })
 
     res.send(messages);
 
