@@ -1,11 +1,12 @@
 import express from "express";
 import morgan from "morgan";
-import { WebhookClient } from 'dialogflow-fulfillment';
+import { WebhookClient, Text, Suggestion, Card, Image, Payload } from 'dialogflow-fulfillment';
+import dialogflowFulfilment from "dialogflow-fulfillment";
+
 import bodyParser from "body-parser";
 import twilio from "twilio"
 import cors from "cors";
 import dialogflow from '@google-cloud/dialogflow'
-
 
 
 const app = express();
@@ -23,7 +24,9 @@ app.post("/webhook", (request, response) => {
     const _agent = new WebhookClient({ request, response });
 
     function welcome(agent) {
+
         agent.add(`Welcome to my agent!`);
+
     }
     function order(agent) {
 
@@ -37,7 +40,32 @@ app.post("/webhook", (request, response) => {
 
         // TODO: add order to database
 
-        agent.add(`Response from server, here is your order for ${qty} ${size} ${pizzaFlavour} pizza`);
+
+
+        agent.add(`<speak>
+                        <p>
+                            <s> this is a Response from server </s>
+                            <s> here is your order for ${qty} ${size} ${pizzaFlavour} pizza </s>
+                        </p>
+                    </speak>`)
+
+
+        let payload = new Payload("PLATFORM_UNSPECIFIED", {
+            "text": `Response from server, here is your order for ${qty} ${size} ${pizzaFlavour} pizza`
+        });
+        agent.add(payload);
+
+        let payload2 = new Payload("DIALOGFLOW_CONSOLE", {
+            "text": `Response from server, here is your order for ${qty} ${size} ${pizzaFlavour} pizza`
+        });
+        agent.add(payload2);
+
+
+        agent.add(new Suggestion('I want to place another order'));
+        agent.add(new Suggestion('order status'));
+        agent.add(new Suggestion('change order'));
+        agent.add(new Suggestion('thanks'));
+
     }
     function fallback(agent) {
         agent.add(`I didn't understand`);
@@ -84,7 +112,7 @@ app.post("/twiliowebhook", async (req, res, next) => {
 
     responses[0]?.queryResult?.fulfillmentMessages?.map(eachMessage => {
         if (eachMessage.platform === "PLATFORM_UNSPECIFIED") {
-            response.message(eachMessage.text.text[0])    
+            response.message(eachMessage.text.text[0])
         }
     })
 
@@ -124,7 +152,7 @@ app.post("/talktochatbot", async (req, res, next) => {
 
     responses[0]?.queryResult?.fulfillmentMessages?.map(eachMessage => {
         if (eachMessage.platform === "PLATFORM_UNSPECIFIED") {
-            
+
             messages.push({
                 sender: "chatbot",
                 text: eachMessage.text.text[0]
