@@ -148,19 +148,47 @@ app.post("/talktochatbot", async (req, res, next) => {
     // Send request and log result
     const responses = await sessionClient.detectIntent(request);
 
-    console.log("responses: ", responses);
+    console.log("responses: ", responses[0]);
+    console.log("responses: ", JSON.stringify(responses[0]?.queryResult?.fulfillmentMessages));
+    console.log("webhookPayload: ", JSON.stringify(responses[0]?.queryResult?.webhookPayload));
 
     let messages = [];
 
-    responses[0]?.queryResult?.fulfillmentMessages?.map(eachMessage => {
-        if (eachMessage.platform === "PLATFORM_UNSPECIFIED") {
+    // collecting text responses
+    const customPayloadText = responses[0]?.queryResult?.webhookPayload?.fields?.null?.structValue?.fields?.text?.stringValue
 
+    if (customPayloadText !== undefined) { // some thing in custom payload
+
+        messages.push({
+            sender: "chatbot",
+            text: customPayloadText
+        })
+
+    } else {
+        responses[0]?.queryResult?.fulfillmentMessages?.map(eachMessage => {
+            if (eachMessage.platform === "PLATFORM_UNSPECIFIED" && eachMessage.message === "text") {
+
+                messages.push({
+                    sender: "chatbot",
+                    text: eachMessage?.text?.text[0]
+                })
+            }
+        })
+    }
+
+    // collecting suggestion chips
+    responses[0]?.queryResult?.fulfillmentMessages?.map(eachMessage => {
+        if (eachMessage.platform === "PLATFORM_UNSPECIFIED" && eachMessage.message === "quickReplies") {
             messages.push({
                 sender: "chatbot",
-                text: eachMessage?.text?.text[0]
+                quickReplies: eachMessage?.quickReplies?.quickReplies
             })
         }
     })
+    // images
+    // cards
+
+    // collecting audio response
     messages.push({ sender: "chatbot", audio: responses[0]?.outputAudio })
 
     res.send(messages);

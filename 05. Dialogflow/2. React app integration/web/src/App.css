@@ -46,3 +46,13 @@
   border-radius: 20px !important;
 
 }
+
+.quickReply {
+  margin: 5px;
+  background-color: #252A34 ;
+  border-color: #252A34 ;
+  color: white;
+  border-radius: 20px;
+  border-width: 0px;
+  padding: 5px 15px;
+}

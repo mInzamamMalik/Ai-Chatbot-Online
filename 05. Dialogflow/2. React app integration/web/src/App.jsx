@@ -17,59 +17,54 @@ function ChatWindow() {
   //   return prev + " some new value";
   // })
 
-  const sendMessage = async (e) => {
-    e.preventDefault();
-
-    if (userText.trim() === "") return;
-
-    console.log("sendMessage");
+  const sendMessage = async (text) => {
 
     setMessages((prev) => (
-      [{ sender: "user", text: userText }, ...prev]
+      [{ sender: "user", text: text }, ...prev]
     ));
 
     // TODO: send message on dialogflow and get reply
     const response = await axios.post("http://localhost:5001/talktochatbot", {
-      query: userText,
+      query: text,
     })
     console.log("response.data: ", response.data);
 
     let audioBufer = response.data.pop().audio;
     console.log("audioBufer: ", audioBufer);
 
-
-
-    
     let dataUrl = btoa(String.fromCharCode(...new Uint8Array(audioBufer.data)));
 
     let audioFile = new Audio(dataUrl);
     audioFile.play();
 
-
-
     document.querySelector("#myaudio").src = "data:audio/mp3;base64," + dataUrl;
     document.querySelector("#myaudio").play()
-
-
-
-
 
     setMessages((prev) => (
       [...response.data, ...prev]
     ));
 
     setUserText("");
-    e.target.reset();
-
   }
 
+  const sendButtonClick = (e) => {
+    e.preventDefault();
+    if (userText.trim() === "") return;
+    sendMessage(userText)
+    e.target.reset();
+  }
+
+  const suggestionClick = (e) => {
+    console.log("suggestionClick: ", e.target.innerText);
+    sendMessage(e.target.innerText)
+  }
 
   return <>
-    <audio controls id="myaudio"></audio>
+    <audio id="myaudio"></audio>
 
     <h1 className='heading'>CHAT APP</h1>
 
-    <form onSubmit={sendMessage} className="form">
+    <form onSubmit={sendButtonClick} className="form">
 
       <Stack direction="horizontal" gap={3}>
 
@@ -93,10 +88,33 @@ function ChatWindow() {
               <Col className='message user-message'>{eachMessage.text}</Col>
             </Row>)
             :
-            (<Row key={index}>
-              <Col className='message chatbot-message'>{eachMessage.text}</Col>
-              <Col xs={3}></Col>
-            </Row>)
+            ([
+
+              eachMessage?.text !== undefined ? (<Row key={index}>
+                <Col className='message chatbot-message'>{eachMessage.text}</Col>
+                <Col xs={3}></Col>
+              </Row>) : null
+
+              ,
+
+              eachMessage?.quickReplies !== undefined ? (<Row key={index}>
+                <Col className='message chatbot-message'>
+                  {
+                    eachMessage.quickReplies.map(eachReply => (
+                      <button onClick={suggestionClick} className='quickReply'>{eachReply}</button>
+                    ))
+                  }
+                </Col>
+                <Col xs={3}></Col>
+              </Row>) : null
+              ,
+
+              // eachMessage?.cards !== undefined ? (<Row key={index}>
+              //   <Col className='message chatbot-message'>{eachMessage.text}</Col>
+              //   <Col xs={3}></Col>
+              // </Row>) : null
+
+            ])
 
         ))}
       </Container>
