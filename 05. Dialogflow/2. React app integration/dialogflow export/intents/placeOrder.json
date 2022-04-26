@@ -1,0 +1,106 @@
+{
+  "id": "a0cfdf07-2f25-48be-b352-a145865d801c",
+  "name": "placeOrder",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "",
+      "affectedContexts": [
+        {
+          "name": "placeOrder-followup",
+          "lifespan": 2
+        }
+      ],
+      "parameters": [
+        {
+          "id": "9f889270-0e1e-498b-a374-06c7f64ded9b",
+          "name": "qty",
+          "required": true,
+          "dataType": "@sys.number-integer",
+          "value": "$qty",
+          "defaultValue": "",
+          "isList": false,
+          "prompts": [
+            {
+              "lang": "en",
+              "value": "how many pizza would you like to order?"
+            },
+            {
+              "lang": "en",
+              "value": "how many pizza would you like me to deliver?"
+            }
+          ],
+          "promptMessages": [],
+          "noMatchPromptMessages": [],
+          "noInputPromptMessages": [],
+          "outputDialogContexts": []
+        },
+        {
+          "id": "86dd7c62-b12c-49d1-a6e9-77fda45fed83",
+          "name": "size",
+          "required": true,
+          "dataType": "@pizzaSize",
+          "value": "$size",
+          "defaultValue": "",
+          "isList": false,
+          "prompts": [
+            {
+              "lang": "en",
+              "value": "what size would you like order, we have small, medium and large pizza"
+            }
+          ],
+          "promptMessages": [],
+          "noMatchPromptMessages": [],
+          "noInputPromptMessages": [],
+          "outputDialogContexts": []
+        },
+        {
+          "id": "e3a1a5bb-9650-45d2-9da7-7a9c78783137",
+          "name": "pizzaFlavour",
+          "required": true,
+          "dataType": "@pizzaFlavour",
+          "value": "$pizzaFlavour",
+          "defaultValue": "",
+          "isList": false,
+          "prompts": [
+            {
+              "lang": "en",
+              "value": "what flavor would you like me to have? your options are chicken fajita or ranch"
+            },
+            {
+              "lang": "en",
+              "value": "which one would you prefer, chicken fajita or ranch?"
+            }
+          ],
+          "promptMessages": [],
+          "noMatchPromptMessages": [],
+          "noInputPromptMessages": [],
+          "outputDialogContexts": []
+        }
+      ],
+      "messages": [
+        {
+          "type": "0",
+          "title": "",
+          "textToSpeech": "",
+          "lang": "en",
+          "speech": [
+            "something went wrong, please try again later"
+          ],
+          "condition": ""
+        }
+      ],
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": true,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

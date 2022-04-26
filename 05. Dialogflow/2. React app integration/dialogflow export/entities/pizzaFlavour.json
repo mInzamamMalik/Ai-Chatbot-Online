@@ -1,0 +1,9 @@
+{
+  "id": "d211df6e-9d6a-44ee-a131-8b94bce8b14c",
+  "name": "pizzaFlavour",
+  "isOverridable": true,
+  "isEnum": false,
+  "isRegexp": false,
+  "automatedExpansion": false,
+  "allowFuzzyExtraction": false
+}

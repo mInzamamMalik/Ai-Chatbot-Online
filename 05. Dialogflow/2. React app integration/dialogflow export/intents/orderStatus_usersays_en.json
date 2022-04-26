@@ -1,0 +1,41 @@
+[
+  {
+    "id": "8e60d3c3-9224-42b1-98c9-9ed3b7e27591",
+    "data": [
+      {
+        "text": "tell me status of my order",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "8a281bfa-172f-4f36-88b0-8b4191c87bd4",
+    "data": [
+      {
+        "text": "where is my order",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "237aaa50-b88c-44c3-a96a-3e1bafb2708b",
+    "data": [
+      {
+        "text": "order status",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  }
+]

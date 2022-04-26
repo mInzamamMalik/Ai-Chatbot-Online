@@ -1,0 +1,20 @@
+[
+  {
+    "value": "chicken",
+    "synonyms": [
+      "chicken"
+    ]
+  },
+  {
+    "value": "fajita",
+    "synonyms": [
+      "fajita"
+    ]
+  },
+  {
+    "value": "ranch",
+    "synonyms": [
+      "ranch"
+    ]
+  }
+]

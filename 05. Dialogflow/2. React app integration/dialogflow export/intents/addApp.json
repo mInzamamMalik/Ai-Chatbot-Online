@@ -1,0 +1,36 @@
+{
+  "id": "f6a271fc-438b-4a04-a007-90973c665c96",
+  "parentId": "145bc740-bb50-4c84-8ef7-1e8344786b87",
+  "rootParentId": "a0cfdf07-2f25-48be-b352-a145865d801c",
+  "name": "addApp",
+  "auto": true,
+  "contexts": [
+    "placeOrder-yes-followup"
+  ],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "placeOrder.placeOrder-yes.placeOrder-yes-yes",
+      "affectedContexts": [],
+      "parameters": [],
+      "messages": [
+        {
+          "type": "0",
+          "title": "",
+          "textToSpeech": "",
+          "lang": "en",
+          "condition": ""
+        }
+      ],
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

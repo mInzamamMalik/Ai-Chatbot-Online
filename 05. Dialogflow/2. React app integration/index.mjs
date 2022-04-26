@@ -40,27 +40,25 @@ app.post("/webhook", (request, response) => {
 
         // TODO: add order to database
 
-
-
         agent.add(`<speak>
                         <p>
-                            <s> this is a Response from server </s>
-                            <s> here is your order for ${qty} ${size} ${pizzaFlavour} pizza </s>
+                            <s> your order for ${qty} ${size} ${pizzaFlavour} pizza is noted, would you like to add drinks?</s>
                         </p>
                     </speak>`)
 
 
         let payload = new Payload("PLATFORM_UNSPECIFIED", {
-            "text": `Response from server, here is your order for ${qty} ${size} ${pizzaFlavour} pizza`
+            "text": `your order for ${qty} ${size} ${pizzaFlavour} pizza is noted, would you like to add drinks?`
         });
         agent.add(payload);
 
         let payload2 = new Payload("DIALOGFLOW_CONSOLE", {
-            "text": `Response from server, here is your order for ${qty} ${size} ${pizzaFlavour} pizza`
+            "text": `your order for ${qty} ${size} ${pizzaFlavour} pizza is noted, would you like to add drinks?`
         });
         agent.add(payload2);
 
 
+        agent.add(new Suggestion('yes please'));
         agent.add(new Suggestion('I want to place another order'));
         agent.add(new Suggestion('order status'));
         agent.add(new Suggestion('change order'));

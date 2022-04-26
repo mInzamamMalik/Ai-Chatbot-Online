@@ -1,0 +1,26 @@
+[
+  {
+    "value": "small",
+    "synonyms": [
+      "small",
+      "single serving",
+      "pan"
+    ]
+  },
+  {
+    "value": "medium",
+    "synonyms": [
+      "medium",
+      "regular"
+    ]
+  },
+  {
+    "value": "large",
+    "synonyms": [
+      "large",
+      "2 serving",
+      "two serving",
+      "big"
+    ]
+  }
+]

@@ -1,0 +1,110 @@
+{
+  "id": "5db06f73-6ee3-4784-9bdb-3e7fc441d418",
+  "name": "Default Welcome Intent",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "input.welcome",
+      "affectedContexts": [],
+      "parameters": [],
+      "messages": [
+        {
+          "type": "simple_response",
+          "platform": "google",
+          "title": "",
+          "textToSpeech": "",
+          "items": [
+            {
+              "description": "",
+              "textToSpeech": "Hi and Good morning, I am your pizza delivery assistant how may I help you today?",
+              "displayText": "",
+              "footer": "",
+              "ssml": ""
+            },
+            {
+              "description": "",
+              "textToSpeech": "Hi and Good morning, I am your pizza delivery assistant how may I assist you today?",
+              "displayText": "",
+              "footer": "",
+              "ssml": ""
+            },
+            {
+              "description": "",
+              "textToSpeech": "Hi, I am your pizza delivery assistant how may I help you today?",
+              "displayText": "",
+              "footer": "",
+              "ssml": ""
+            }
+          ],
+          "lang": "en",
+          "condition": ""
+        },
+        {
+          "type": "simple_response",
+          "platform": "google",
+          "title": "",
+          "textToSpeech": "",
+          "items": [
+            {
+              "description": "",
+              "textToSpeech": "we have got three flavor, Chicken, fajita and Ranch",
+              "displayText": "",
+              "footer": "",
+              "ssml": ""
+            },
+            {
+              "description": "",
+              "textToSpeech": "which one you like to have Chicken, fajita and Ranch",
+              "displayText": "",
+              "footer": "",
+              "ssml": ""
+            }
+          ],
+          "lang": "en",
+          "condition": ""
+        },
+        {
+          "type": "0",
+          "title": "",
+          "textToSpeech": "",
+          "lang": "en",
+          "speech": [
+            "Hi and Good morning, I am your pizza delivery assistant how may I help you today?",
+            "Hi and Good morning, I am your pizza delivery assistant how may I assist you today?",
+            "Hi, I am your pizza delivery assistant how may I help you today?"
+          ],
+          "condition": ""
+        },
+        {
+          "type": "0",
+          "title": "",
+          "textToSpeech": "",
+          "lang": "en",
+          "speech": [
+            "we have got three flavor, Chicken, fajita and Ranch",
+            "which one you like to have Chicken, fajita and Ranch"
+          ],
+          "condition": ""
+        }
+      ],
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [
+    {
+      "name": "page_open"
+    },
+    {
+      "name": "GOOGLE_ASSISTANT_WELCOME"
+    }
+  ],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

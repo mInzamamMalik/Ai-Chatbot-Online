@@ -1,0 +1,44 @@
+{
+  "id": "145bc740-bb50-4c84-8ef7-1e8344786b87",
+  "parentId": "a0cfdf07-2f25-48be-b352-a145865d801c",
+  "rootParentId": "a0cfdf07-2f25-48be-b352-a145865d801c",
+  "name": "addDrink",
+  "auto": true,
+  "contexts": [
+    "placeOrder-followup"
+  ],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "placeOrder.placeOrder-yes",
+      "affectedContexts": [
+        {
+          "name": "placeOrder-yes-followup",
+          "lifespan": 2
+        }
+      ],
+      "parameters": [],
+      "messages": [
+        {
+          "type": "0",
+          "title": "",
+          "textToSpeech": "",
+          "lang": "en",
+          "speech": [
+            "here is your drink, would you like to add some appetizers?"
+          ],
+          "condition": ""
+        }
+      ],
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}
