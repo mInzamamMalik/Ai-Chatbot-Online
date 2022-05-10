@@ -86,7 +86,6 @@ app.post("/twiliowebhook", async (req, res, next) => {
     console.log("twiliowebhook");
     console.log(req.body);
 
-    // todo: call dialogflow
     // Create a new session
     const sessionClient = new dialogflow.SessionsClient();
     const sessionPath = sessionClient.projectAgentSessionPath("hello-world-agent-mcdr", "session123");
@@ -108,13 +107,20 @@ app.post("/twiliowebhook", async (req, res, next) => {
     const responses = await sessionClient.detectIntent(request);
 
 
-    responses[0]?.queryResult?.fulfillmentMessages?.map(eachMessage => {
-        if (eachMessage.platform === "PLATFORM_UNSPECIFIED") {
-            response.message(eachMessage.text.text[0])
-        }
-    })
+    // collecting text responses
+    const customPayloadText = responses[0]?.queryResult?.webhookPayload?.fields?.null?.structValue?.fields?.text?.stringValue
 
+    if (customPayloadText !== undefined) { // some thing in custom payload
+        response.message(customPayloadText)
+    } else {
+        responses[0]?.queryResult?.fulfillmentMessages?.map(eachMessage => {
+            if (eachMessage.platform === "PLATFORM_UNSPECIFIED" && eachMessage.message === "text") {
+                response.message(eachMessage.text.text[0])
+            }
+        })
+    }
     res.send(response.toString());
+
 })
 
 app.post("/talktochatbot", async (req, res, next) => {
